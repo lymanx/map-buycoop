@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ONE · BuyCoop</title>
+  <meta name="description" content="ONE BuyCoop — cooperative directory, dossiers, and coordination pages." />
+
+  <style>
+    :root{
+      --ink:#0B0F14;
+      --muted:#6B7280;
+      --line:#E5E7EB;
+      --accent:#0F766E;
+      --warm:#D97706;
+      --bg:#F9FAFB;
+    }
+
+    *{box-sizing:border-box}
+
+    body{
+      margin:0;
+      font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      color:var(--ink);
+      background:radial-gradient(circle at top left,#fff 0,#f7faf9 40%,#eef4f2 100%);
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:24px;
+    }
+
+    main{
+      width:100%;
+      max-width:780px;
+      background:rgba(255,255,255,.82);
+      border:1px solid var(--line);
+      border-radius:28px;
+      padding:36px;
+      box-shadow:0 24px 80px rgba(15,23,42,.08);
+      backdrop-filter:blur(14px);
+    }
+
+    .kicker{
+      font-size:13px;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      color:var(--accent);
+      font-weight:700;
+      margin-bottom:18px;
+    }
+
+    h1{
+      font-size:clamp(38px,7vw,72px);
+      line-height:.92;
+      margin:0 0 20px;
+      letter-spacing:-.06em;
+    }
+
+    p{
+      font-size:18px;
+      line-height:1.6;
+      color:var(--muted);
+      max-width:620px;
+      margin:0 0 28px;
+    }
+
+    .panel{
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:18px;
+      background:#fff;
+      margin-top:22px;
+    }
+
+    .row{
+      display:flex;
+      justify-content:space-between;
+      gap:16px;
+      padding:12px 0;
+      border-bottom:1px solid var(--line);
+      font-size:14px;
+    }
+
+    .row:last-child{border-bottom:0}
+
+    .label{color:var(--muted)}
+    .value{font-weight:700;text-align:right}
+
+    .links{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-top:28px;
+    }
+
+    a{
+      text-decoration:none;
+      border-radius:999px;
+      padding:12px 16px;
+      font-weight:700;
+      font-size:14px;
+    }
+
+    .primary{
+      background:var(--accent);
+      color:white;
+    }
+
+    .secondary{
+      border:1px solid var(--line);
+      color:var(--ink);
+      background:white;
+    }
+
+    @media(max-width:600px){
+      main{padding:26px;border-radius:22px}
+      .row{display:block}
+      .value{text-align:left;margin-top:4px}
+    }
+  </style>
+</head>
+
+<body>
+  <main>
+    <div class="kicker">ONE · BuyCoop</div>
+
+    <h1>One doorway.<br>Many cooperative nodes.</h1>
+
+    <p>
+      This is the placeholder surface for BuyCoop’s cooperative directory and dossier layer.
+      Country, city, and cooperative pages will be organized here as public coordination pages.
+    </p>
+
+    <div class="panel">
+      <div class="row">
+        <div class="label">Current domain</div>
+        <div class="value" id="domain">—</div>
+      </div>
+      <div class="row">
+        <div class="label">Suggested path format</div>
+        <div class="value">/ph/coop-name/</div>
+      </div>
+      <div class="row">
+        <div class="label">Page status</div>
+        <div class="value" id="status">Initializing</div>
+      </div>
+    </div>
+
+    <div class="links">
+      <a class="primary" href="https://buy.coop">Go to BuyCoop</a>
+      <a class="secondary" href="/ph/">Philippines Directory</a>
+      <a class="secondary" href="/ph/sample/">Sample Coop Page</a>
+    </div>
+  </main>
+
+  <script>
+    const domain = window.location.hostname || "one.buy.coop";
+    document.getElementById("domain").textContent = domain;
+
+    const path = window.location.pathname;
+    const status = document.getElementById("status");
+
+    if (path === "/" || path === "") {
+      status.textContent = "Root placeholder active";
+    } else {
+      status.textContent = "Path detected: " + path;
+    }
+
+    console.log("BuyCoop ONE active:", {
+      domain,
+      path,
+      timestamp: new Date().toISOString()
+    });
+  </script>
+</body>
+</html>
