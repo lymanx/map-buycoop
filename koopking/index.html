@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<link rel="icon" type="image/png" sizes="32x32" href="https://cdn.shopify.com/s/files/1/1304/2747/files/buyCoop____favicon.png?v=1702363958">
+
+<title>Koop King Multipurpose Cooperative</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg:#0B0F14;
+  --panel:#0F1720;
+  --text:#E5E7EB;
+  --muted:#9CA3AF;
+  --line:#1F2937;
+  --accent:#0F766E;
+}
+
+*{
+  box-sizing:border-box;
+  font-family:Inter, system-ui;
+}
+
+body{
+  margin:0;
+  color:var(--text);
+  background:
+    radial-gradient(1200px 600px at 10% -10%, rgba(15,118,110,0.18), transparent 60%),
+    linear-gradient(180deg,#0B0F14 0%,#0E141A 100%);
+}
+
+.hero{
+  max-width:1100px;
+  margin:auto;
+  padding:28px 24px 12px;
+}
+
+.hero h1{
+  margin:0;
+  font-size:28px;
+  font-weight:600;
+}
+
+.hero p{
+  margin-top:6px;
+  font-size:14px;
+  color:var(--muted);
+}
+
+.section{
+  max-width:1100px;
+  margin:auto;
+  padding:16px 24px;
+}
+
+.card{
+  background:rgba(15,23,32,0.7);
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:18px;
+  margin-bottom:14px;
+}
+
+.card h3{
+  margin:0;
+  font-size:16px;
+  font-weight:600;
+}
+
+.card p{
+  margin-top:10px;
+  font-size:14px;
+  color:var(--muted);
+  line-height:1.7;
+}
+
+.intake{
+  background:rgba(15,23,32,0.75);
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:18px;
+}
+
+input{
+  width:100%;
+  margin-top:10px;
+  padding:14px;
+  border-radius:10px;
+  border:1px solid var(--line);
+  background:transparent;
+  color:white;
+  font-size:14px;
+}
+
+.btn{
+  margin-top:12px;
+  padding:14px;
+  width:100%;
+  border-radius:10px;
+  border:none;
+  background:var(--accent);
+  color:white;
+  font-weight:600;
+  font-size:15px;
+  cursor:pointer;
+}
+
+.footer{
+  border-top:1px solid var(--line);
+  padding:18px;
+  margin-top:40px;
+  text-align:center;
+  font-size:14px;
+}
+
+.footer a{
+  color:var(--text);
+  text-decoration:none;
+}
+
+.status{
+  margin-top:8px;
+  font-size:13px;
+  color:var(--muted);
+}
+.success{ color:#22c55e; }
+.error{ color:#ef4444; }
+</style>
+</head>
+
+<body>
+
+<div class="hero">
+  <h1>Koop King Multipurpose Cooperative</h1>
+  <p>Col. Godofredo M. Juliano Building, Bayani Road, Fort Bonifacio, Taguig City</p>
+</div>
+
+<div class="section">
+  <div class="card">
+    <h3>Overview</h3>
+    <p>
+      Established in 2001, Koop King Multipurpose Cooperative is a primary multipurpose cooperative serving active and retired personnel of the Armed Forces of the Philippines, Philippine Coast Guard, Bureau of Fire Protection, and Bureau of Jail Management and Penology. It achieved “Billionaire Cooperative” classification in 2020, reflecting sustained asset growth and institutional maturity.
+    </p>
+    <p>
+      Its membership base produces a governance structure defined by discipline, accountability, and operational stability. The cooperative participates in the Koop Kapatid program as a mentor to smaller cooperatives, extending its operational experience into the broader ecosystem.
+    </p>
+    <p>
+      With a growing digital presence and established fulfillment capability, Koop King operates at a point where demand consistently exceeds internal supply capacity. This creates active opportunities for subcontracting and coordinated sourcing within the cooperative network.
+    </p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="card">
+    <h3>Supply</h3>
+    <p>
+      Koop King operates across financial services, textile manufacturing, and logistics. Its financial services arm supports institutional lending and capital operations for its membership base, forming a stable financial core that underpins its activities.
+    </p>
+    <p>
+      Through its URFIT brand, the cooperative engages in garment manufacturing, customization, and printing, supplying both institutional clients and cooperative markets. This production line spans sourcing, fabrication, and distribution, supported by active marketplace presence.
+    </p>
+    <p>
+      The logistics and transport division enables cargo movement and institutional shuttle services, allowing the cooperative to manage supply flows internally. In parallel, Koop King maintains consistent procurement demand for textiles, raw materials, printing supplies, fuel, and maintenance inputs.
+    </p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="card">
+    <h3>Coverage</h3>
+    <p>
+      Operations are based in Taguig City, with logistics corridors extending across Metro Manila and into Batangas, Bicol, and Cagayan de Oro. These routes are supported by internal transport assets, reducing dependence on third-party logistics.
+    </p>
+    <p>
+      This operational structure results in low geographic risk and consistent delivery capability across multiple regions. The cooperative is positioned to handle multi-location supply coordination with a high degree of reliability.
+    </p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="intake">
+
+    <form id="coopForm">
+      <input name="cooperative_name" value="Koop King Multipurpose Cooperative" hidden>
+      <input name="country" value="Philippines" hidden>
+
+      <input name="location" placeholder="Your location or address">
+      <input name="supply" placeholder="What do you need from this cooperative?" required>
+      <input name="coverage" placeholder="Where should it be delivered?">
+      <input name="contact" placeholder="Your contact mobile, email, name">
+
+      <input type="text" name="website" style="position:absolute; left:-9999px;">
+
+      <button type="submit" class="btn">
+        Request Supply from Koop King Multipurpose Cooperative
+      </button>
+
+      <div id="formStatus" class="status"></div>
+    </form>
+
+  </div>
+</div>
+
+<div class="footer">
+  <a href="https://buy.coop">The Co-operative Exchange</a>
+</div>
+
+<script>
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby4Oo4RHZj6wOaWfvkghTLG7JHVMFXEMKdcV4DJhXOFaP0UYljypZEfj6vSkt3VCPNXAA/exec";
+
+document.getElementById('coopForm').addEventListener('submit', function(e){
+  e.preventDefault();
+
+  const form = e.target;
+  const status = document.getElementById('formStatus');
+  const btn = form.querySelector('button');
+
+  if (btn.disabled) return;
+
+  btn.disabled = true;
+  btn.innerText = "Submitting...";
+
+  const data = new FormData(form);
+
+  fetch(SCRIPT_URL, {
+    method: 'POST',
+    body: data
+  })
+  .then(res => res.text())
+  .then(() => {
+    status.innerHTML = "Request sent";
+    status.className = "status success";
+
+    form.reset();
+
+    btn.disabled = false;
+    btn.innerText = "Request Supply from Koop King Multipurpose Cooperative";
+
+    setTimeout(() => {
+      status.innerHTML = "";
+    }, 3000);
+  })
+  .catch(() => {
+    status.innerHTML = "Submission failed";
+    status.className = "status error";
+
+    btn.disabled = false;
+    btn.innerText = "Request Supply from Koop King Multipurpose Cooperative";
+  });
+});
+</script>
+
+</body>
+</html>
