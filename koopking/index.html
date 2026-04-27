@@ -1,265 +1,456 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Koop King Multipurpose Cooperative — The Co-operative Exchange</title>
 <link rel="icon" type="image/png" sizes="32x32" href="https://cdn.shopify.com/s/files/1/1304/2747/files/buyCoop____favicon.png?v=1702363958">
-
-<title>Koop King Multipurpose Cooperative</title>
-
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-
 <style>
-:root{
-  --bg:#0B0F14;
-  --panel:#0F1720;
-  --text:#E5E7EB;
-  --muted:#9CA3AF;
-  --line:#1F2937;
-  --accent:#0F766E;
-}
-
-*{
-  box-sizing:border-box;
-  font-family:Inter, system-ui;
-}
-
+*{margin:0;padding:0;box-sizing:border-box;}
 body{
-  margin:0;
-  color:var(--text);
-  background:
-    radial-gradient(1200px 600px at 10% -10%, rgba(15,118,110,0.18), transparent 60%),
-    linear-gradient(180deg,#0B0F14 0%,#0E141A 100%);
-}
-
-.hero{
-  max-width:1100px;
-  margin:auto;
-  padding:28px 24px 12px;
-}
-
-.hero h1{
-  margin:0;
-  font-size:28px;
-  font-weight:600;
-    margin-top: 30px;
-}
-
-.hero p{
-  margin-top:6px;
+  font-family:'Inter',sans-serif;
+  background:#fff;
+  color:#111;
   font-size:14px;
-  color:var(--muted);
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
 }
 
-.section{
-  max-width:1100px;
-  margin:auto;
-  padding:16px 24px;
+/* ── TOPBAR ── */
+.topbar{
+  border-bottom:1px solid #e5e7eb;
+  padding:0 32px;
+  height:52px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  position:sticky;
+  top:0;
+  background:#fff;
+  z-index:100;
 }
-
-.card{
-  background:rgba(15,23,32,0.7);
-  border:1px solid var(--line);
-  border-radius:12px;
-  padding:18px;
-  margin-bottom:14px;
-}
-
-.card h3{
-  margin:0;
-  font-size:16px;
-  font-weight:600;
-}
-
-.card p{
-  margin-top:10px;
-  font-size:14px;
-  color:var(--muted);
-  line-height:1.7;
-}
-
-.intake{
-  background:rgba(15,23,32,0.75);
-  border:1px solid var(--line);
-  border-radius:12px;
-  padding:18px;
-}
-
-input{
-  width:100%;
-  margin-top:10px;
-  padding:14px;
-  border-radius:10px;
-  border:1px solid var(--line);
-  background:transparent;
-  color:white;
-  font-size:14px;
-}
-
-.btn{
-  margin-top:12px;
-  padding:14px;
-  width:100%;
-  border-radius:10px;
-  border:none;
-  background:var(--accent);
-  color:white;
-  font-weight:600;
+.topbar-brand{
   font-size:15px;
-  cursor:pointer;
-}
-
-.footer{
-  border-top:1px solid var(--line);
-  padding:18px;
-  margin-top:40px;
-  text-align:center;
-  font-size:14px;
-}
-
-.footer a{
-  color:var(--text);
+  font-weight:600;
+  color:#111;
   text-decoration:none;
+  white-space:nowrap;
+}
+.topbar-nav{display:flex;gap:20px;align-items:center;}
+.topbar-nav a{
+  font-size:13px;
+  color:#6b7280;
+  text-decoration:none;
+  white-space:nowrap;
+}
+.topbar-nav a:hover{color:#111;}
+.topbar-nav a.active{color:#111;font-weight:500;}
+
+/* ── PAGE HEADER ── */
+.page-header{padding:40px 32px 28px;border-bottom:1px solid #e5e7eb;}
+.page-header-meta{
+  font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+  color:#9ca3af;margin-bottom:10px;display:flex;align-items:center;gap:8px;
+}
+@keyframes pulse{
+  0%,100%{box-shadow:0 0 0 0 rgba(34,197,94,.4);}
+  50%{box-shadow:0 0 0 5px rgba(34,197,94,0);}
+}
+.live-dot{width:7px;height:7px;border-radius:50%;background:#22c55e;display:inline-block;flex-shrink:0;animation:pulse 2s ease-in-out infinite;}
+.page-header h1{font-size:30px;font-weight:700;line-height:1.2;margin-bottom:8px;letter-spacing:-.02em;}
+.page-header-address{font-size:13px;color:#6b7280;margin-bottom:20px;}
+.tag-row{display:flex;gap:8px;flex-wrap:wrap;}
+.tag{
+  font-size:11px;font-weight:500;padding:4px 12px;
+  border:1px solid #e5e7eb;border-radius:20px;
+  color:#374151;background:#f9fafb;white-space:nowrap;
+  text-decoration:none;display:inline-block;
+}
+a.tag:hover{border-color:#9ca3af;color:#111;cursor:pointer;}
+a.tag.signal:hover{border-color:#4ade80;background:#dcfce7;}
+.tag.signal{background:#f0fdf4;border-color:#86efac;color:#166534;}
+
+/* ── ANCHOR NAV ── */
+.anchor-nav{
+  border-bottom:1px solid #e5e7eb;padding:0 32px;
+  display:flex;overflow-x:auto;scrollbar-width:none;
+}
+.anchor-nav::-webkit-scrollbar{display:none;}
+.anchor-nav a{
+  font-size:13px;font-weight:500;color:#6b7280;text-decoration:none;
+  padding:14px 16px;border-bottom:2px solid transparent;white-space:nowrap;
+  transition:color .15s,border-color .15s;
+}
+.anchor-nav a:hover{color:#111;}
+.anchor-nav a.active{color:#0f766e;border-bottom-color:#0f766e;}
+
+/* ── STAT ROW ── */
+.stat-row{
+  padding:0 32px;
+  display:grid;grid-template-columns:repeat(4,1fr);
+  border-bottom:1px solid #e5e7eb;
+}
+.stat{
+  /* equal horizontal padding so text doesn't hug either divider */
+  padding:24px 20px;
+  border-right:1px solid #e5e7eb;
+}
+.stat:last-child{border-right:none;}
+.stat-val{font-size:20px;font-weight:600;letter-spacing:-.02em;color:#111;line-height:1.3;margin-bottom:4px;}
+.stat-label{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#9ca3af;}
+
+/* ── TWO-PANEL LAYOUT ── */
+.layout{
+  display:grid;grid-template-columns:1fr 480px;
+  align-items:start;border-bottom:1px solid #e5e7eb;
+}
+.main{padding:40px 40px 60px 32px;border-right:1px solid #e5e7eb;}
+.section-heading{
+  font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;
+  color:#9ca3af;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid #e5e7eb;
+}
+.prose{font-size:14px;color:#374151;line-height:1.8;margin-bottom:32px;}
+.prose p+p{margin-top:12px;}
+.divider{border:none;border-top:1px solid #e5e7eb;margin:32px 0;}
+
+.ops-grid{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:1px;background:#e5e7eb;
+  border:1px solid #e5e7eb;border-radius:6px;overflow:hidden;margin-bottom:32px;
+}
+.ops-cell{background:#fff;padding:20px;}
+.ops-cell-label{
+  font-size:11px;font-weight:600;letter-spacing:.08em;
+  text-transform:uppercase;color:#111;margin-bottom:10px;
+}
+.ops-cell p{font-size:13px;color:#6b7280;line-height:1.65;}
+
+.route-list{list-style:none;}
+.route-list li{
+  display:flex;align-items:center;gap:12px;
+  padding:11px 0;border-bottom:1px solid #e5e7eb;
+  font-size:13px;color:#374151;
+}
+.route-list li:last-child{border-bottom:none;}
+.route-dot{width:7px;height:7px;border-radius:50%;background:#0f766e;flex-shrink:0;}
+
+/* ── RIGHT PANEL ── */
+.right-panel{
+  padding:28px 32px 40px;
+  position:sticky;top:52px;
+  max-height:calc(100vh - 52px);
+  overflow-y:auto;
+  scrollbar-width:thin;
 }
 
-.status{
-  margin-top:8px;
-  font-size:13px;
-  color:var(--muted);
+.panel-heading{font-size:15px;font-weight:600;letter-spacing:-.01em;margin-bottom:4px;}
+.panel-sub{font-size:12px;color:#6b7280;margin-bottom:20px;}
+
+.field{margin-bottom:10px;}
+input[type=text]{
+  width:100%;padding:10px 12px;
+  border:1px solid #d1d5db;border-radius:5px;
+  font-family:'Inter',sans-serif;font-size:13px;color:#111;
+  background:#fff;outline:none;
 }
-.success{ color:#22c55e; }
-.error{ color:#ef4444; }
+input[type=text]:focus{border-color:#0f766e;box-shadow:0 0 0 3px rgba(15,118,110,.08);}
+input[type=text]::placeholder{color:#9ca3af;}
+
+.btn-primary{
+  width:100%;padding:11px;background:#0f766e;color:#fff;
+  border:none;border-radius:5px;
+  font-family:'Inter',sans-serif;font-size:13px;font-weight:500;cursor:pointer;margin-top:4px;
+}
+.btn-primary:hover{background:#0d6460;}
+
+.form-status{margin-top:8px;font-size:12px;color:#6b7280;text-align:center;min-height:18px;}
+.form-status.success{color:#166534;}
+.form-status.error{color:#991b1b;}
+
+.panel-divider{border:none;border-top:1px solid #e5e7eb;margin:20px 0;}
+
+/* Map CTA card */
+.map-cta{
+  display:flex;align-items:center;gap:12px;
+  padding:14px 16px;border:1px solid #e5e7eb;border-radius:6px;
+  text-decoration:none;transition:border-color .15s,background .15s;
+}
+.map-cta:hover{border-color:#0f766e;background:#f0fdf4;}
+.map-cta-icon{
+  width:34px;height:34px;border-radius:50%;
+  background:#f0fdf4;border:1px solid #86efac;
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;color:#0f766e;font-weight:400;flex-shrink:0;line-height:1;
+}
+.map-cta-text{flex:1;}
+.map-cta-label{font-size:12px;font-weight:600;color:#111;line-height:1.4;}
+.map-cta-sub{font-size:11px;color:#6b7280;}
+.map-cta-arrow{font-size:13px;color:#0f766e;font-weight:600;}
+
+/* ── FOOTER ── */
+.footer{
+  border-top:1px solid #e5e7eb;padding:18px 32px;
+  display:flex;justify-content:space-between;align-items:center;
+  flex-wrap:wrap;gap:12px;
+}
+.footer-copy{font-size:12px;color:#9ca3af;}
+.footer-link{font-size:12px;color:#0f766e;text-decoration:none;font-weight:500;}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  .layout{grid-template-columns:1fr;}
+  .main{border-right:none;padding:28px 16px 40px;}
+  .right-panel{
+    position:static;max-height:none;overflow:visible;
+    padding:28px 16px 40px;border-top:1px solid #e5e7eb;
+  }
+}
+@media(max-width:768px){
+  .topbar{padding:0 16px;}
+  .topbar-nav{display:none;}
+  .page-header{padding:24px 16px 20px;}
+  .page-header h1{font-size:22px;}
+  .anchor-nav{padding:0 16px;}
+  .stat-row{grid-template-columns:1fr 1fr;padding:0 16px;}
+  .stat{padding:18px 16px;border-right:none;border-bottom:1px solid #e5e7eb;}
+  .stat:nth-child(odd){border-right:1px solid #e5e7eb;}
+  .stat:nth-last-child(-n+2){border-bottom:none;}
+  .ops-grid{grid-template-columns:1fr;}
+  .footer{padding:16px;}
+}
+@media(max-width:480px){
+  .stat-row{grid-template-columns:1fr;}
+  .stat{border-right:none !important;border-bottom:1px solid #e5e7eb !important;padding:16px !important;}
+  .stat:last-child{border-bottom:none !important;}
+}
 </style>
 </head>
-
 <body>
 
-<div class="hero">
+<!-- TOPBAR -->
+<nav class="topbar">
+  <a href="https://buy.coop" class="topbar-brand">The Co-operative Exchange</a>
+  <div class="topbar-nav">
+    <a href="https://buy.coop/collections/featured-suppliers">Supply Signals</a>
+    <a href="https://buy.coop/collections/koop-king-multipurpose-cooperative">Logistics</a>
+    <a href="https://buy.coop/pages/partnerships">Partnerships</a>
+    <a href="https://map.buy.coop" class="active">Global Supply Map</a>
+    <a href="https://buy.coop/pages/data-intelligence">Data Intelligence</a>
+  </div>
+</nav>
+
+<!-- PAGE HEADER -->
+<div class="page-header" id="top">
+  <div class="page-header-meta">
+    <span class="live-dot"></span>
+    Supply Dossier &middot; Philippines &middot; NCR
+  </div>
   <h1>Koop King Multipurpose Cooperative</h1>
-  <p>Col. Godofredo M. Juliano Building, Bayani Road, Fort Bonifacio, Taguig City</p>
-</div>
-
-<div class="section">
-  <div class="card">
-    <h3>Overview</h3>
-    <p>
-      Established in 2001, Koop King Multipurpose Cooperative is a primary multipurpose cooperative serving active and retired personnel of the Armed Forces of the Philippines, Philippine Coast Guard, Bureau of Fire Protection, and Bureau of Jail Management and Penology. It achieved “Billionaire Cooperative” classification in 2020, reflecting sustained asset growth and institutional maturity.
-    </p>
-    <p>
-      Its membership base produces a governance structure defined by discipline, accountability, and operational stability. The cooperative participates in the Koop Kapatid program as a mentor to smaller cooperatives, extending its operational experience into the broader ecosystem.
-    </p>
-    <p>
-      With a growing digital presence and established fulfillment capability, Koop King operates at a point where demand consistently exceeds internal supply capacity. This creates active opportunities for subcontracting and coordinated sourcing within the cooperative network.
-    </p>
+  <div class="page-header-address">Col. Godofredo M. Juliano Bldg, Bayani Road, Fort Bonifacio, Taguig City</div>
+  <div class="tag-row">
+    <a href="#request" class="tag signal">Open to Supply Requests</a>
+    <a href="#operations" class="tag">Financial Services</a>
+    <a href="#operations" class="tag">Textile &amp; Garments</a>
+    <a href="#coverage" class="tag">Logistics</a>
+    <span class="tag">Est. 2001</span>
+    <span class="tag">Billionaire Cooperative</span>
   </div>
 </div>
 
-<div class="section">
-  <div class="card">
-    <h3>Supply</h3>
-    <p>
-      Koop King operates across financial services, textile manufacturing, and logistics. Its financial services arm supports institutional lending and capital operations for its membership base, forming a stable financial core that underpins its activities.
-    </p>
-    <p>
-      Through its URFIT brand, the cooperative engages in garment manufacturing, customization, and printing, supplying both institutional clients and cooperative markets. This production line spans sourcing, fabrication, and distribution, supported by active marketplace presence.
-    </p>
-    <p>
-      The logistics and transport division enables cargo movement and institutional shuttle services, allowing the cooperative to manage supply flows internally. In parallel, Koop King maintains consistent procurement demand for textiles, raw materials, printing supplies, fuel, and maintenance inputs.
-    </p>
+<!-- ANCHOR NAV -->
+<nav class="anchor-nav" id="anchorNav">
+  <a href="#about" class="active">About</a>
+  <a href="#operations">Operations</a>
+  <a href="#coverage">Coverage</a>
+  <a href="#request">Request Supply</a>
+</nav>
+
+<!-- STAT ROW -->
+<div class="stat-row">
+  <div class="stat">
+    <div class="stat-val">2001</div>
+    <div class="stat-label">Year established</div>
+  </div>
+  <div class="stat">
+    <div class="stat-val">2020</div>
+    <div class="stat-label">Billionaire classification</div>
+  </div>
+  <div class="stat">
+    <div class="stat-val">AFP &middot; PCG &middot; BFP &middot; BJMP</div>
+    <div class="stat-label">Membership base</div>
+  </div>
+  <div class="stat">
+    <div class="stat-val">4 Regions</div>
+    <div class="stat-label">Logistics coverage</div>
   </div>
 </div>
 
-<div class="section">
-  <div class="card">
-    <h3>Coverage</h3>
-    <p>
-      Operations are based in Taguig City, with logistics corridors extending across Metro Manila and into Batangas, Bicol, and Cagayan de Oro. These routes are supported by internal transport assets, reducing dependence on third-party logistics.
-    </p>
-    <p>
-      This operational structure results in low geographic risk and consistent delivery capability across multiple regions. The cooperative is positioned to handle multi-location supply coordination with a high degree of reliability.
-    </p>
-  </div>
-</div>
+<!-- TWO-PANEL LAYOUT -->
+<div class="layout">
 
-<div class="section">
-  <div class="intake">
+  <!-- LEFT: DETAIL -->
+  <div class="main">
+
+    <div id="about" style="scroll-margin-top:115px;">
+      <div class="section-heading">About</div>
+      <div class="prose">
+        <p>Established in 2001, Koop King Multipurpose Cooperative serves active and retired personnel of the Armed Forces of the Philippines, Philippine Coast Guard, Bureau of Fire Protection, and Bureau of Jail Management and Penology. Its membership structure produces governance defined by institutional discipline and operational accountability.</p>
+        <p>In 2020, the cooperative achieved Billionaire Cooperative classification — a threshold reflecting sustained asset growth and financial maturity. It participates in the Koop Kapatid program as a mentor cooperative, extending operational experience into the broader ecosystem.</p>
+        <p>Demand consistently exceeds internal supply capacity, creating active opportunities for subcontracting and coordinated sourcing within the cooperative network.</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <div id="operations" style="scroll-margin-top:115px;">
+      <div class="section-heading">Supply Operations</div>
+      <div class="ops-grid">
+        <div class="ops-cell">
+          <div class="ops-cell-label">Financial Services</div>
+          <p>Institutional lending and capital operations for its membership base. Forms the cooperative's financial core.</p>
+        </div>
+        <div class="ops-cell">
+          <div class="ops-cell-label">URFIT — Textiles</div>
+          <p>Garment manufacturing, customization, and printing. Active on cooperative marketplaces with institutional clients.</p>
+        </div>
+        <div class="ops-cell">
+          <div class="ops-cell-label">Logistics &amp; Transport</div>
+          <p>Cargo movement and institutional shuttle services. Internal transport assets reduce third-party logistics dependency.</p>
+        </div>
+        <div class="ops-cell">
+          <div class="ops-cell-label">Procurement Demand</div>
+          <p>Consistent inbound demand for textiles, raw materials, printing inputs, fuel, and maintenance goods.</p>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <div id="coverage" style="scroll-margin-top:115px;">
+      <div class="section-heading">Coverage &amp; Logistics Routes</div>
+      <ul class="route-list">
+        <li><span class="route-dot"></span>Metro Manila — Primary Operational Base</li>
+        <li><span class="route-dot"></span>Batangas — Active Logistics Corridor</li>
+        <li><span class="route-dot"></span>Bicol Region — Active Logistics Corridor</li>
+        <li><span class="route-dot"></span>Cagayan de Oro — Active Logistics Corridor</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- RIGHT: FORM + MAP CTA -->
+  <div class="right-panel" id="request" style="scroll-margin-top:115px;">
+
+    <div class="panel-heading">Send a Supply Request</div>
+    <div class="panel-sub">Routed through The Co-operative Exchange</div>
 
     <form id="coopForm">
-      <input name="cooperative_name" value="Koop King Multipurpose Cooperative" hidden>
-      <input name="country" value="Philippines" hidden>
-
-      <input name="location" placeholder="Your location or address">
-      <input name="supply" placeholder="What do you need from this cooperative?" required>
-      <input name="coverage" placeholder="Where should it be delivered?">
-      <input name="contact" placeholder="Your contact mobile, email, name">
-
-      <input type="text" name="website" style="position:absolute; left:-9999px;">
-
-      <button type="submit" class="btn">
-        Request Supply from Koop King Multipurpose Cooperative
-      </button>
-      <div style="margin-top:10px; text-align:center; font-size:13px; color:#9CA3AF;">
-  or 
-  <a href="https://map.buy.coop" style="color:#0F766E; text-decoration:none; font-weight:500;">
-    Add Your Cooperative to the Global Supply Map
-  </a>
-</div>
-
-      <div id="formStatus" class="status"></div>
+      <input name="cooperative_name" value="Koop King Multipurpose Cooperative" type="text" style="display:none;">
+      <input name="country" value="Philippines" type="text" style="display:none;">
+      <input type="text" name="website" style="position:absolute;left:-9999px;" tabindex="-1" autocomplete="off">
+      <div class="field"><input type="text" name="location" placeholder="Your name or cooperative"></div>
+      <div class="field"><input type="text" name="your_location" placeholder="Your location"></div>
+      <div class="field"><input type="text" name="supply" placeholder="What do you need from this cooperative?" required></div>
+      <div class="field"><input type="text" name="coverage" placeholder="Delivery location"></div>
+      <div class="field"><input type="text" name="contact" placeholder="Email or mobile"></div>
+      <button type="submit" class="btn-primary" id="submitBtn">Request Supply from the Cooperative</button>
+      <div id="formStatus" class="form-status"></div>
     </form>
+
+    <hr class="panel-divider">
+
+    <a href="https://map.buy.coop" class="map-cta">
+      <div class="map-cta-icon">+</div>
+      <div class="map-cta-text">
+        <div class="map-cta-label">Add your cooperative to the global supply map</div>
+        <div class="map-cta-sub">map.buy.coop</div>
+      </div>
+      <div class="map-cta-arrow">→</div>
+    </a>
+
+    <hr class="panel-divider">
+
+    <div style="font-size:12px;color:#9ca3af;line-height:1.7;">
+      Part of <a href="https://www.buy.coop" style="color:#0f766e;text-decoration:none;font-weight:500;">The Co-operative Exchange</a> — Infrastructure for the Cooperative Economy
+    </div>
+
+    <hr class="panel-divider">
+
+    <a href="https://pay.buy.coop" class="map-cta">
+      <div class="map-cta-icon" style="background:#fefce8;border-color:#fde047;color:#854d0e;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+      </div>
+      <div class="map-cta-text">
+        <div class="map-cta-label">CoopPay — The Payment Rail for Cooperative Commerce</div>
+        <div class="map-cta-sub">pay.buy.coop</div>
+      </div>
+      <div class="map-cta-arrow">→</div>
+    </a>
+    <div style="font-size:11px;color:#9ca3af;line-height:1.6;margin-top:8px;padding:0 4px;">
+      The world's first Lightning Network super app built by and for cooperatives
+    </div>
 
   </div>
 </div>
 
+<!-- FOOTER -->
 <div class="footer">
-  <a href="https://buy.coop">The Co-operative Exchange</a>
+  <span class="footer-copy">© <span id="footerYear"></span> The Co-operative Exchange</span>
+  <a href="https://www.buy.coop" class="footer-link">www.buy.coop</a>
 </div>
 
 <script>
+document.getElementById('footerYear').textContent = new Date().getFullYear();
+
+// Smooth scroll for ALL internal anchor links (nav + tags)
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const target = document.getElementById(a.getAttribute('href').slice(1));
+    if(target){ e.preventDefault(); target.scrollIntoView({behavior:'smooth'}); }
+  });
+});
+
+// Scroll-spy for anchor nav
+const sections = ['about','operations','coverage','request'];
+const navLinks = document.querySelectorAll('.anchor-nav a');
+function setActiveAnchor(){
+  let current = 'about';
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if(el && window.scrollY >= el.getBoundingClientRect().top + window.scrollY - 130) current = id;
+  });
+  navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + current));
+}
+window.addEventListener('scroll', setActiveAnchor, {passive:true});
+
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby4Oo4RHZj6wOaWfvkghTLG7JHVMFXEMKdcV4DJhXOFaP0UYljypZEfj6vSkt3VCPNXAA/exec";
 
 document.getElementById('coopForm').addEventListener('submit', function(e){
   e.preventDefault();
-
   const form = e.target;
   const status = document.getElementById('formStatus');
-  const btn = form.querySelector('button');
-
-  if (btn.disabled) return;
-
+  const btn = document.getElementById('submitBtn');
+  if(btn.disabled) return;
   btn.disabled = true;
-  btn.innerText = "Submitting...";
-
-  const data = new FormData(form);
-
-  fetch(SCRIPT_URL, {
-    method: 'POST',
-    body: data
-  })
-  .then(res => res.text())
-  .then(() => {
-    status.innerHTML = "Request sent";
-    status.className = "status success";
-
-    form.reset();
-
-    btn.disabled = false;
-    btn.innerText = "Request Supply from Koop King Multipurpose Cooperative";
-
-    setTimeout(() => {
-      status.innerHTML = "";
-    }, 3000);
-  })
-  .catch(() => {
-    status.innerHTML = "Submission failed";
-    status.className = "status error";
-
-    btn.disabled = false;
-    btn.innerText = "Request Supply from Koop King Multipurpose Cooperative";
-  });
+  btn.textContent = 'Submitting...';
+  fetch(SCRIPT_URL, {method:'POST', body: new FormData(form)})
+    .then(r => r.text())
+    .then(() => {
+      status.textContent = 'Request sent.';
+      status.className = 'form-status success';
+      form.reset();
+      btn.disabled = false;
+      btn.textContent = 'Request Supply from the Cooperative';
+      setTimeout(() => { status.textContent = ''; status.className = 'form-status'; }, 4000);
+    })
+    .catch(() => {
+      status.textContent = 'Submission failed. Please try again.';
+      status.className = 'form-status error';
+      btn.disabled = false;
+      btn.textContent = 'Request Supply from the Cooperative';
+    });
 });
 </script>
-
 </body>
 </html>
