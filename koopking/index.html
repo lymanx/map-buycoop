@@ -102,7 +102,7 @@ a.tag.signal:hover{border-color:#4ade80;background:#dcfce7;}
 
 /* ── TWO-PANEL LAYOUT ── */
 .layout{
-  display:grid;grid-template-columns:1fr 480px;
+  display:grid;grid-template-columns:1fr 520px;
   align-items:start;border-bottom:1px solid #e5e7eb;
 }
 .main{padding:40px 40px 60px 32px;border-right:1px solid #e5e7eb;}
@@ -137,11 +137,8 @@ a.tag.signal:hover{border-color:#4ade80;background:#dcfce7;}
 
 /* ── RIGHT PANEL ── */
 .right-panel{
-  padding:28px 32px 40px;
-  position:sticky;top:52px;
-  max-height:calc(100vh - 52px);
-  overflow-y:auto;
-  scrollbar-width:thin;
+  /* column shell only — sticky logic is on inner div */
+  border-left:1px solid #e5e7eb;
 }
 
 .panel-heading{font-size:15px;font-weight:600;letter-spacing:-.01em;margin-bottom:4px;}
@@ -201,9 +198,12 @@ input[type=text]::placeholder{color:#9ca3af;}
 @media(max-width:900px){
   .layout{grid-template-columns:1fr;}
   .main{border-right:none;padding:28px 16px 40px;}
-  .right-panel{
-    position:static;max-height:none;overflow:visible;
-    padding:28px 16px 40px;border-top:1px solid #e5e7eb;
+  .right-panel{border-left:none;border-top:1px solid #e5e7eb;}
+  .right-panel > div{
+    position:static !important;
+    max-height:none !important;
+    overflow:visible !important;
+    padding:28px 16px 40px !important;
   }
 }
 @media(max-width:768px){
@@ -339,58 +339,58 @@ input[type=text]::placeholder{color:#9ca3af;}
 
   </div>
 
-  <!-- RIGHT: FORM + MAP CTA -->
+  <!-- RIGHT: 3 CTAs as one sticky unit -->
   <div class="right-panel" id="request" style="scroll-margin-top:115px;">
+    <div style="position:sticky;top:52px;background:#fff;padding:28px 32px 32px;border-left:1px solid #e5e7eb;max-height:calc(100vh - 52px);overflow-y:auto;scrollbar-width:none;">
 
-    <div class="panel-heading">Send a Supply Request</div>
-    <div class="panel-sub">Routed through The Co-operative Exchange</div>
+      <div class="panel-heading">Send a Supply Request</div>
+      <div class="panel-sub">Routed through The Co-operative Exchange</div>
 
-    <form id="coopForm">
-      <input name="cooperative_name" value="Koop King Multipurpose Cooperative" type="text" style="display:none;">
-      <input name="country" value="Philippines" type="text" style="display:none;">
-      <input type="text" name="website" style="position:absolute;left:-9999px;" tabindex="-1" autocomplete="off">
-      <div class="field"><input type="text" name="location" placeholder="Your name or cooperative"></div>
-      <div class="field"><input type="text" name="your_location" placeholder="Your location"></div>
-      <div class="field"><input type="text" name="supply" placeholder="What do you need from this cooperative?" required></div>
-      <div class="field"><input type="text" name="coverage" placeholder="Delivery location"></div>
-      <div class="field"><input type="text" name="contact" placeholder="Email or mobile"></div>
-      <button type="submit" class="btn-primary" id="submitBtn">Request Supply from the Cooperative</button>
-      <div id="formStatus" class="form-status"></div>
-    </form>
+      <form id="coopForm">
+        <input name="cooperative_name" value="Koop King Multipurpose Cooperative" type="text" style="display:none;">
+        <input name="country" value="Philippines" type="text" style="display:none;">
+        <input type="text" name="website" style="position:absolute;left:-9999px;" tabindex="-1" autocomplete="off">
+        <div class="field"><input type="text" name="location" placeholder="Your name or cooperative"></div>
+        <div class="field"><input type="text" name="your_location" placeholder="Your location"></div>
+        <div class="field"><input type="text" name="supply" placeholder="What do you need from this cooperative?" required></div>
+        <div class="field"><input type="text" name="coverage" placeholder="Delivery location"></div>
+        <div class="field"><input type="text" name="contact" placeholder="Email or mobile"></div>
+        <button type="submit" class="btn-primary" id="submitBtn">Request Supply from the Cooperative</button>
+        <div id="formStatus" class="form-status"></div>
+      </form>
 
-    <hr class="panel-divider">
+      <hr class="panel-divider">
 
-    <a href="https://map.buy.coop" class="map-cta">
-      <div class="map-cta-icon">+</div>
-      <div class="map-cta-text">
-        <div class="map-cta-label">Add your cooperative to the global supply map</div>
-        <div class="map-cta-sub">map.buy.coop</div>
+      <a href="https://map.buy.coop" class="map-cta">
+        <div class="map-cta-icon">+</div>
+        <div class="map-cta-text">
+          <div class="map-cta-label">Add your cooperative to the global supply map</div>
+          <div class="map-cta-sub">map.buy.coop</div>
+        </div>
+        <div class="map-cta-arrow">→</div>
+      </a>
+
+      <hr class="panel-divider">
+
+      <div style="font-size:12px;color:#9ca3af;line-height:1.7;margin-bottom:16px;">
+        Part of <a href="https://www.buy.coop" style="color:#0f766e;text-decoration:none;font-weight:500;">The Co-operative Exchange</a> — Infrastructure for the Cooperative Economy
       </div>
-      <div class="map-cta-arrow">→</div>
-    </a>
 
-    <hr class="panel-divider">
+      <a href="https://pay.buy.coop" class="map-cta">
+        <div class="map-cta-icon" style="background:#fefce8;border-color:#fde047;color:#854d0e;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        </div>
+        <div class="map-cta-text">
+          <div class="map-cta-label">CoopPay — The Payment Rail for Cooperative Commerce</div>
+          <div class="map-cta-sub">pay.buy.coop</div>
+        </div>
+        <div class="map-cta-arrow">→</div>
+      </a>
+      <div style="font-size:11px;color:#9ca3af;line-height:1.6;margin-top:8px;padding:0 4px;">
+        The world's first Lightning Network super app built by and for cooperatives
+      </div>
 
-    <div style="font-size:12px;color:#9ca3af;line-height:1.7;">
-      Part of <a href="https://www.buy.coop" style="color:#0f766e;text-decoration:none;font-weight:500;">The Co-operative Exchange</a> — Infrastructure for the Cooperative Economy
     </div>
-
-    <hr class="panel-divider">
-
-    <a href="https://pay.buy.coop" class="map-cta">
-      <div class="map-cta-icon" style="background:#fefce8;border-color:#fde047;color:#854d0e;">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-      </div>
-      <div class="map-cta-text">
-        <div class="map-cta-label">CoopPay — The Payment Rail for Cooperative Commerce</div>
-        <div class="map-cta-sub">pay.buy.coop</div>
-      </div>
-      <div class="map-cta-arrow">→</div>
-    </a>
-    <div style="font-size:11px;color:#9ca3af;line-height:1.6;margin-top:8px;padding:0 4px;">
-      The world's first Lightning Network super app built by and for cooperatives
-    </div>
-
   </div>
 </div>
 
