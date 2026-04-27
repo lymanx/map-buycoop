@@ -1,213 +1,268 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Global Cooperative Supply Map — The Co-operative Exchange</title>
 <link rel="icon" type="image/png" sizes="32x32" href="https://cdn.shopify.com/s/files/1/1304/2747/files/buyCoop____favicon.png?v=1702363958">
 <link rel="apple-touch-icon" href="https://cdn.shopify.com/s/files/1/1304/2747/files/buyCoop____favicon.png?v=1702363958">
-
-<title>Global Cooperative Supply Map</title>
-
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-
 <style>
-:root{
-  --bg:#0B0F14;
-  --panel:#0F1720;
-  --text:#E5E7EB;
-  --muted:#9CA3AF;
-  --line:#1F2937;
-  --accent:#0F766E;
-}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Inter',sans-serif;background:#fff;color:#111;font-size:14px;line-height:1.6;-webkit-font-smoothing:antialiased;}
 
-*{
-  box-sizing:border-box;
-  font-family:Inter, system-ui;
-}
+/* ── TOPBAR ── */
+.topbar{border-bottom:1px solid #e5e7eb;padding:0 32px;height:52px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:#fff;z-index:100;}
+.topbar-brand{font-size:15px;font-weight:600;color:#111;text-decoration:none;white-space:nowrap;}
+.topbar-nav{display:flex;gap:20px;align-items:center;}
+.topbar-nav a{font-size:13px;color:#6b7280;text-decoration:none;white-space:nowrap;}
+.topbar-nav a:hover{color:#111;}
+.topbar-nav a.active{color:#111;font-weight:500;}
 
-body{
-  margin:0;
-  color:var(--text);
-  background:
-    radial-gradient(1200px 600px at 10% -10%, rgba(15,118,110,0.18), transparent 60%),
-    linear-gradient(180deg,#0B0F14 0%,#0E141A 100%);
+/* ── PAGE HEADER: title + stats only, full width ── */
+.page-header{
+  padding:36px 32px 32px;
+  border-bottom:1px solid #e5e7eb;
 }
+.page-header-meta{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#9ca3af;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(34,197,94,.4);}50%{box-shadow:0 0 0 5px rgba(34,197,94,0);}}
+.live-dot{width:7px;height:7px;border-radius:50%;background:#22c55e;display:inline-block;flex-shrink:0;animation:pulse 2s ease-in-out infinite;}
+.page-header h1{font-size:30px;font-weight:700;line-height:1.2;margin-bottom:10px;letter-spacing:-.02em;}
+.page-header-sub{font-size:14px;color:#6b7280;line-height:1.7;margin-bottom:28px;max-width:680px;}
+.header-stats{display:flex;gap:0;padding-top:24px;border-top:1px solid #e5e7eb;}
+.hstat{padding-right:28px;}
+.hstat+.hstat{padding-left:28px;border-left:1px solid #e5e7eb;}
+.hstat-val{font-size:20px;font-weight:600;letter-spacing:-.02em;color:#111;line-height:1.2;margin-bottom:3px;}
+.hstat-label{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#9ca3af;}
 
-/* HERO */
-.hero{
-  max-width:1100px;
-  margin:auto;
-  padding:28px 24px 12px;
-}
-
-.hero h1{
-  margin:0;
-  font-size:28px;
-  font-weight:600;
-  margin-top: 30px;
-}
-
-.hero p{
-  margin-top:8px;
-  font-size:15px;
-  color:var(--muted);
-}
-
-/* SECTION */
-.section{
-  max-width:1100px;
-  margin:auto;
-  padding:16px 24px;
-}
-
-/* INTAKE */
-.intake{
-  background:rgba(15,23,32,0.75);
-  border:1px solid var(--line);
-  border-radius:12px;
-  padding:18px;
-}
-
-input{
-  width:100%;
-  margin-top:10px;
-  padding:14px;
-  border-radius:10px;
-  border:1px solid var(--line);
-  background:transparent;
-  color:white;
-  font-size:14px;
-}
-
-/* BUTTON */
-.btn{
-  margin-top:12px;
-  padding:14px;
-  width:100%;
-  border-radius:10px;
-  border:none;
-  background:var(--accent);
-  color:white;
-  font-weight:600;
-  font-size:15px;
-  cursor:pointer;
-}
-
-/* GRID */
-.grid{
+/* ── INTAKE BAND: form left, CTAs right ── */
+.intake-band{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-  gap:14px;
+  grid-template-columns:2fr 1fr;
+  border-bottom:1px solid #e5e7eb;
 }
-
-/* CARD */
-.card{
-  background:rgba(15,23,32,0.7);
-  border:1px solid var(--line);
-  border-radius:12px;
-  padding:16px;
+.intake-form{
+  padding:28px 40px 32px 32px;
+  border-right:1px solid #e5e7eb;
 }
+.field{margin-bottom:10px;}
+input[type=text]{width:100%;padding:10px 12px;border:1px solid #d1d5db;border-radius:5px;font-family:'Inter',sans-serif;font-size:13px;color:#111;background:#fff;outline:none;}
+input[type=text]:focus{border-color:#0f766e;box-shadow:0 0 0 3px rgba(15,118,110,.08);}
+input[type=text]::placeholder{color:#9ca3af;}
+.btn-primary{width:100%;padding:12px;background:#0f766e;color:#fff;border:none;border-radius:5px;font-family:'Inter',sans-serif;font-size:14px;font-weight:500;cursor:pointer;margin-top:4px;}
+.btn-primary:hover{background:#0d6460;}
+.form-status{margin-top:8px;font-size:12px;color:#6b7280;text-align:center;min-height:18px;}
+.form-status.success{color:#166534;}
+.form-status.error{color:#991b1b;}
 
-.card h3{
-  margin:0;
-  font-size:16px;
-  font-weight:600;
+/* ── SIDEBAR CTAs ── */
+.intake-sidebar{
+  padding:28px 32px 32px;
+  display:flex;
+  flex-direction:column;
+  gap:0;
 }
-
-
-
-
-.card ul{
-  margin-top:10px;
-  padding-left:18px;
-}
-
-.card li{
-  font-size:14px;
-  color:var(--muted);
-  margin-bottom:10px;
-  line-height:1.6;
-}
-
-
-.card a{
-  color:var(--text);
+.sidebar-label{font-size:11px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:#9ca3af;margin-bottom:16px;}
+.cta-card{
+  display:flex;align-items:center;gap:12px;
+  padding:14px 0;
+  border-bottom:1px solid #e5e7eb;
   text-decoration:none;
+  transition:opacity .15s;
 }
-
-.card a:hover{
-  color:white;
+.cta-card:last-child{border-bottom:none;}
+.cta-card:hover{opacity:.75;}
+.cta-icon{
+  width:36px;height:36px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;font-size:16px;
 }
+.cta-icon.lightning{background:#fefce8;border:1px solid #fde047;color:#854d0e;}
+.cta-icon.exchange{background:#f0fdf4;border:1px solid #86efac;color:#0f766e;font-weight:600;font-size:13px;}
+.cta-text{flex:1;}
+.cta-label{font-size:13px;font-weight:600;color:#111;line-height:1.4;margin-bottom:2px;}
+.cta-sub{font-size:11px;color:#6b7280;line-height:1.4;}
+.cta-arrow{font-size:13px;color:#9ca3af;flex-shrink:0;}
 
-/* FOOTER */
-
-
-
-.footer{
-  border-top:1px solid var(--line);
-  padding:18px;
-  margin-top:40px;  /* 👈 add this */
-  text-align:center;
-  font-size:14px;
+/* ── SECTION META ── */
+.section-meta{
+  padding:14px 32px;
+  display:flex;align-items:center;justify-content:space-between;
+  border-top:1px solid #e5e7eb;
+  border-bottom:1px solid #e5e7eb;
 }
-
-
-.footer a{
-  color:var(--text);
-  text-decoration:none;
+.section-label{font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:#9ca3af;}
+.shuffle-btn{
+  display:flex;align-items:center;gap:6px;
+  background:none;border:1px solid #e5e7eb;border-radius:5px;
+  padding:5px 10px;cursor:pointer;color:#6b7280;font-size:12px;
+  font-family:'Inter',sans-serif;transition:border-color .15s,color .15s;
 }
+.shuffle-btn:hover{border-color:#9ca3af;color:#111;}
+.shuffle-btn svg{flex-shrink:0;}
 
-/* STATUS */
-.status{
-  margin-top:8px;
-  font-size:13px;
-  color:var(--muted);
+/* ── MASONRY ── */
+.masonry-wrap{
+  margin:0 32px;
+  border-top:1px solid #e5e7eb;
 }
-.success{ color:#22c55e; }
-.error{ color:#ef4444; }
+.masonry{
+  column-count:4;
+  column-gap:0;
+  background:#fff;
+}
+.country-card{
+  break-inside:avoid;
+  display:inline-block;
+  width:100%;
+  background:#fff;
+  padding:20px 20px 20px 24px;
+  /* no borders — removes the broken-border problem entirely */
+}
+.country-header{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:14px;}
+.country-card h3{font-size:13px;font-weight:600;color:#111;letter-spacing:-.01em;}
+.coop-count{font-size:10px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:#9ca3af;}
+.coop-list{list-style:none;}
+.coop-list li{font-size:13px;color:#6b7280;padding:5px 0;border-bottom:1px solid #f3f4f6;line-height:1.5;}
+.coop-list li:last-child{border-bottom:none;padding-bottom:0;}
+.coop-list a{color:#374151;text-decoration:none;font-weight:500;}
+.coop-list a:hover{color:#0f766e;}
+
+/* ── FOOTER ── */
+.footer{border-top:1px solid #e5e7eb;padding:18px 32px;margin-top:32px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
+.footer-copy{font-size:12px;color:#9ca3af;}
+.footer-link{font-size:12px;color:#0f766e;text-decoration:none;font-weight:500;}
+
+/* ── RESPONSIVE ── */
+@media(max-width:1100px){.masonry{column-count:3;}}
+@media(max-width:900px){
+  .intake-band{grid-template-columns:1fr;}
+  .intake-form{border-right:none;border-bottom:1px solid #e5e7eb;padding:24px 16px;}
+  .intake-sidebar{padding:24px 16px;flex-direction:row;flex-wrap:wrap;gap:16px;}
+  .cta-card{border-bottom:none;flex:1;min-width:180px;}
+  .masonry{column-count:2;}
+  .masonry-wrap{margin:0 16px;}
+  .section-meta{padding:12px 16px;}
+}
+@media(max-width:768px){
+  .topbar{padding:0 16px;}
+  .topbar-nav{display:none;}
+  .page-header{padding:24px 16px 24px;}
+  .masonry{column-count:2;}
+  .footer{padding:16px;}
+}
+@media(max-width:480px){
+  .masonry{column-count:1;}
+  .masonry-wrap{margin:0;}
+}
 </style>
 </head>
-
 <body>
 
-<!-- HERO -->
-<div class="hero">
+<!-- TOPBAR -->
+<nav class="topbar">
+  <a href="https://buy.coop" class="topbar-brand">The Co-operative Exchange</a>
+  <div class="topbar-nav">
+    <a href="https://buy.coop/collections/featured-suppliers">Supply Signals</a>
+    <a href="https://buy.coop/collections/koop-king-multipurpose-cooperative">Logistics</a>
+    <a href="https://buy.coop/pages/partnerships">Partnerships</a>
+    <a href="https://map.buy.coop" class="active">Global Supply Map</a>
+    <a href="https://buy.coop/pages/data-intelligence">Data Intelligence</a>
+  </div>
+</nav>
+
+<!-- PAGE HEADER: title + stats, full width -->
+<div class="page-header">
+  <div class="page-header-meta">
+    <span class="live-dot"></span>
+    Live Supply Network
+  </div>
   <h1>Global Cooperative Supply Map</h1>
-  <p>Mapping cooperative supply across ASEAN, Asia and the world.</p>
-</div>
-
-<!-- INTAKE -->
-<div class="section">
-  <div class="intake">
-
-    <form id="coopForm">
-  <input name="cooperative_name" placeholder="Cooperative name" required>
-  <input name="country" placeholder="Country, state or region" required>
-  <input name="location" placeholder="Location or address of cooperative">
-  <input name="supply" placeholder="What products does the cooperative supply?" required>
-  <input name="coverage" placeholder="Where can the cooperative supply to?">
-  <input name="contact" placeholder="Your mobile, email, name">
-
-<input type="text" name="website" style="position:absolute; left:-9999px;">
-
-  <button type="submit" class="btn">
-    Add Your Cooperative to the Global Supply Map
-  </button>
-
-  <div id="formStatus" class="status"></div>
-</form>
-
+  <p class="page-header-sub">Mapping cooperative supply across ASEAN, Asia, and the world. Every cooperative listed is a potential supply node in the network.</p>
+  <div class="header-stats">
+    <div class="hstat">
+      <div class="hstat-val" id="totalCoops">—</div>
+      <div class="hstat-label">Cooperatives listed</div>
+    </div>
+    <div class="hstat">
+      <div class="hstat-val" id="totalCountries">—</div>
+      <div class="hstat-label">Countries</div>
+    </div>
+    <div class="hstat">
+      <div class="hstat-val">ASEAN + Asia</div>
+      <div class="hstat-label">Coverage</div>
+    </div>
   </div>
 </div>
 
-<!-- COUNTRIES -->
-<div class="section">
-  <div class="grid" id="grid">
+<!-- INTAKE BAND: form + sidebar CTAs -->
+<div class="intake-band">
 
-    <div class="card">
-      <h3>Philippines</h3>
-      <ul>
+  <div class="intake-form">
+    <form id="coopForm">
+      <input type="text" name="website" style="position:absolute;left:-9999px;" tabindex="-1" autocomplete="off">
+      <div class="field"><input type="text" name="cooperative_name" placeholder="Cooperative name" required></div>
+      <div class="field"><input type="text" name="country" placeholder="Country, state or region" required></div>
+      <div class="field"><input type="text" name="location" placeholder="Location or address"></div>
+      <div class="field"><input type="text" name="supply" placeholder="What products does the cooperative supply?" required></div>
+      <div class="field"><input type="text" name="coverage" placeholder="Where can the cooperative supply to?"></div>
+      <div class="field"><input type="text" name="contact" placeholder="Your mobile, email, name"></div>
+      <button type="submit" class="btn-primary" id="submitBtn">Add Your Cooperative to the Global Supply Map</button>
+      <div id="formStatus" class="form-status"></div>
+    </form>
+  </div>
+
+  <div class="intake-sidebar">
+    <div class="sidebar-label">Also on the Exchange</div>
+
+    <a href="https://pay.buy.coop" class="cta-card">
+      <div class="cta-icon lightning">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+      </div>
+      <div class="cta-text">
+        <div class="cta-label">CoopPay</div>
+        <div class="cta-sub">Payment Rail for Cooperative Commerce</div>
+        <div class="cta-sub">pay.buy.coop</div>
+      </div>
+      <div class="cta-arrow">→</div>
+    </a>
+
+    <a href="https://www.buy.coop" class="cta-card">
+      <div class="cta-icon exchange">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M7 16V4m0 0L3 8m4-4l4 4"/><path d="M17 8v12m0 0l4-4m-4 4l-4-4"/>
+        </svg>
+      </div>
+      <div class="cta-text">
+        <div class="cta-label">The Co-operative Exchange</div>
+        <div class="cta-sub">Infrastructure for the Cooperative Economy</div>
+        <div class="cta-sub">buy.coop</div>
+      </div>
+      <div class="cta-arrow">→</div>
+    </a>
+  </div>
+
+</div>
+
+<!-- SECTION META -->
+<div class="section-meta">
+  <span class="section-label">Supply Network — <span id="countLabel">—</span></span>
+  <button class="shuffle-btn" id="shuffleBtn" title="Shuffle order">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="16 3 21 3 21 8"/><polyline points="8 21 3 21 3 16"/>
+      <line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/>
+    </svg>
+    Shuffle
+  </button>
+</div>
+
+<!-- MASONRY GRID -->
+<div class="masonry-wrap">
+  <div class="masonry" id="grid">
+
+    <div class="country-card">
+      <div class="country-header"><h3>Philippines</h3><span class="coop-count" data-auto-count></span></div>
+      <ul class="coop-list">
         <li>1 Cooperative Insurance System of the Philippines Life and General Insurance</li>
         <li>Cooperative Health Management Federation</li>
         <li><a href="/koopking">Koop King Multipurpose Cooperative</a></li>
@@ -219,81 +274,81 @@ input{
       </ul>
     </div>
 
-    <div class="card">
-      <h3>Indonesia</h3>
-      <ul>
+    <div class="country-card">
+      <div class="country-header"><h3>Indonesia</h3><span class="coop-count" data-auto-count></span></div>
+      <ul class="coop-list">
         <li>Induk Koperasi Unit Desa</li>
         <li>Koperasi Pegawai Republik Indonesia</li>
         <li>Kospin Jasa</li>
       </ul>
     </div>
 
-    <div class="card">
-      <h3>Malaysia</h3>
-      <ul>
+    <div class="country-card">
+      <div class="country-header"><h3>Malaysia</h3><span class="coop-count" data-auto-count></span></div>
+      <ul class="coop-list">
         <li>Bank Kerjasama Rakyat Malaysia</li>
         <li>Koperasi Tentera</li>
         <li>Koperasi Wawasan Pekerja</li>
       </ul>
     </div>
 
-    <div class="card">
-      <h3>Singapore</h3>
-      <ul>
+    <div class="country-card">
+      <div class="country-header"><h3>Singapore</h3><span class="coop-count" data-auto-count></span></div>
+      <ul class="coop-list">
         <li>NTUC FairPrice Co-operative</li>
         <li>NTUC Income Insurance Co-operative</li>
         <li>NTUC Foodfare Co-operative</li>
       </ul>
     </div>
 
-    <div class="card">
-      <h3>Vietnam</h3>
-      <ul>
+    <div class="country-card">
+      <div class="country-header"><h3>Vietnam</h3><span class="coop-count" data-auto-count></span></div>
+      <ul class="coop-list">
         <li>Saigon Union of Trading Cooperatives</li>
         <li>Vietnam Cooperative Alliance</li>
         <li>Hanoi Trade Union Cooperative Federation</li>
       </ul>
     </div>
 
-    <div class="card">
-      <h3>Thailand</h3>
-      <ul>
+    <div class="country-card">
+      <div class="country-header"><h3>Thailand</h3><span class="coop-count" data-auto-count></span></div>
+      <ul class="coop-list">
         <li>Agricultural Cooperative Federation of Thailand</li>
         <li>Federation of Savings and Credit Cooperatives of Thailand</li>
         <li>Dairy Cooperative Federation of Thailand</li>
       </ul>
     </div>
 
-    <div class="card">
-      <h3>Myanmar</h3>
-      <ul>
+    <div class="country-card">
+      <div class="country-header"><h3>Myanmar</h3><span class="coop-count" data-auto-count></span></div>
+      <ul class="coop-list">
         <li>Central Cooperative Society</li>
         <li>Myanmar Agricultural Cooperatives</li>
         <li>Myanmar Credit Unions</li>
       </ul>
     </div>
 
-    <div class="card">
-      <h3>Cambodia</h3>
-      <ul>
+    <div class="country-card">
+      <div class="country-header"><h3>Cambodia</h3><span class="coop-count" data-auto-count></span></div>
+      <ul class="coop-list">
         <li>Battambang Union of Agricultural Cooperatives</li>
         <li>Cambodian Agricultural Cooperative Federation</li>
         <li>Cambodia Community Savings Cooperatives</li>
       </ul>
     </div>
 
-    <div class="card">
-      <h3>Laos</h3>
-      <ul>
+    <div class="country-card">
+      <div class="country-header"><h3>Laos</h3><span class="coop-count" data-auto-count></span></div>
+      <ul class="coop-list">
         <li>Lao Farmers' Cooperative Network</li>
         <li>Lao Credit Union Movement</li>
         <li>Bolaven Plateau Coffee Cooperatives</li>
       </ul>
     </div>
 
-    <div class="card">
-      <h3>Brunei</h3>
-      <ul>
+    <div class="country-card">
+      <div class="country-header"><h3>Brunei</h3><span class="coop-count" data-auto-count></span></div>
+      <ul class="coop-list">
         <li>Brunei Cooperative Society</li>
         <li>Brunei Agricultural Cooperative Society</li>
         <li>Brunei Credit Cooperative</li>
@@ -303,63 +358,63 @@ input{
   </div>
 </div>
 
+<!-- FOOTER -->
 <div class="footer">
-  <a href="https://buy.coop">The Co-operative Exchange</a>
+  <span class="footer-copy">© <span id="footerYear"></span> The Co-operative Exchange</span>
+  <a href="https://www.buy.coop" class="footer-link">www.buy.coop</a>
 </div>
 
 <script>
-/* SHUFFLE */
-const grid = document.getElementById('grid');
-const items = Array.from(grid.children);
-items.sort(() => Math.random() - 0.5);
-items.forEach(el => grid.appendChild(el));
+document.getElementById('footerYear').textContent = new Date().getFullYear();
 
-/* APPS SCRIPT ENDPOINT */
+function shuffle(){
+  const grid = document.getElementById('grid');
+  const cards = Array.from(grid.querySelectorAll('.country-card'));
+  cards.sort(() => Math.random() - 0.5);
+  cards.forEach(el => grid.appendChild(el));
+}
+
+// Auto-fill per-country count badges
+document.querySelectorAll('.country-card').forEach(card => {
+  const n = card.querySelectorAll('.coop-list li').length;
+  const badge = card.querySelector('[data-auto-count]');
+  if(badge) badge.textContent = n + ' listed';
+});
+
+// Header totals
+const cards = Array.from(document.querySelectorAll('.country-card'));
+const totalCoops = cards.reduce((s,c) => s + c.querySelectorAll('.coop-list li').length, 0);
+document.getElementById('totalCoops').textContent = totalCoops;
+document.getElementById('totalCountries').textContent = cards.length;
+document.getElementById('countLabel').textContent = cards.length + ' Countries';
+
+// Shuffle on load + button
+shuffle();
+document.getElementById('shuffleBtn').addEventListener('click', shuffle);
+
+// Form
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby4Oo4RHZj6wOaWfvkghTLG7JHVMFXEMKdcV4DJhXOFaP0UYljypZEfj6vSkt3VCPNXAA/exec";
-
 document.getElementById('coopForm').addEventListener('submit', function(e){
   e.preventDefault();
-
-  const form = e.target;
-  const status = document.getElementById('formStatus');
-  const btn = form.querySelector('button');
-
-  if (btn.disabled) return;
-
-  btn.disabled = true;
-  btn.innerText = "Submitting...";
-
-  status.innerHTML = "";
-
-  const data = new FormData(form);
-
-  fetch(SCRIPT_URL, {
-    method: 'POST',
-    body: data
-  })
-  .then(res => res.text())
-  .then(() => {
-    status.innerHTML = "Added to Global Supply Map";
-    status.className = "status success";
-
-    form.reset();
-
-    btn.disabled = false;
-    btn.innerText = "Add Cooperative to Global Supply Map";
-
-    setTimeout(() => {
-      status.innerHTML = "";
-    }, 3000);
-  })
-  .catch(() => {
-    status.innerHTML = "Submission failed. Try again.";
-    status.className = "status error";
-
-    btn.disabled = false;
-    btn.innerText = "Add Cooperative to Global Supply Map";
-  });
+  const form = e.target, status = document.getElementById('formStatus'), btn = document.getElementById('submitBtn');
+  if(btn.disabled) return;
+  btn.disabled = true; btn.textContent = 'Submitting...';
+  fetch(SCRIPT_URL, {method:'POST', body: new FormData(form)})
+    .then(r => r.text())
+    .then(() => {
+      status.textContent = 'Added to Global Supply Map.';
+      status.className = 'form-status success';
+      form.reset(); btn.disabled = false;
+      btn.textContent = 'Add Your Cooperative to the Global Supply Map';
+      setTimeout(() => { status.textContent = ''; status.className = 'form-status'; }, 4000);
+    })
+    .catch(() => {
+      status.textContent = 'Submission failed. Please try again.';
+      status.className = 'form-status error';
+      btn.disabled = false;
+      btn.textContent = 'Add Your Cooperative to the Global Supply Map';
+    });
 });
 </script>
-
 </body>
 </html>
