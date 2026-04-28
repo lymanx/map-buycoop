@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cooperative Memorial Access Program — The Co-operative Exchange</title>
+<link rel="icon" type="image/png" sizes="32x32" href="https://cdn.shopify.com/s/files/1/1304/2747/files/buyCoop____favicon.png?v=1702363958">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  font-family:'Inter',sans-serif;background:#fff;color:#111;
+  font-size:14px;line-height:1.6;-webkit-font-smoothing:antialiased;
+}
+
+/* ── TOPBAR ── */
+.topbar{
+  border-bottom:1px solid #e5e7eb;padding:0 32px;height:52px;
+  display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;background:#fff;z-index:100;
+}
+.topbar-brand{font-size:15px;font-weight:600;color:#111;text-decoration:none;white-space:nowrap;}
+.topbar-nav{display:flex;gap:20px;align-items:center;}
+.topbar-nav a{font-size:13px;color:#6b7280;text-decoration:none;white-space:nowrap;}
+.topbar-nav a:hover{color:#111;}
+.topbar-nav a.active{color:#111;font-weight:500;}
+
+/* ── PAGE HEADER ── */
+.page-header{padding:40px 32px 28px;border-bottom:1px solid #e5e7eb;}
+.page-header-meta{
+  font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+  color:#9ca3af;margin-bottom:10px;display:flex;align-items:center;gap:8px;
+}
+@keyframes pulse{
+  0%,100%{box-shadow:0 0 0 0 rgba(34,197,94,.4);}
+  50%{box-shadow:0 0 0 5px rgba(34,197,94,0);}
+}
+.live-dot{width:7px;height:7px;border-radius:50%;background:#22c55e;display:inline-block;flex-shrink:0;animation:pulse 2s ease-in-out infinite;}
+.page-header h1{font-size:30px;font-weight:700;line-height:1.2;margin-bottom:6px;letter-spacing:-.02em;}
+.page-header-institution{font-size:13px;color:#374151;font-weight:500;margin-bottom:4px;}
+.page-header-address{font-size:13px;color:#6b7280;margin-bottom:20px;}
+.tag-row{display:flex;gap:8px;flex-wrap:wrap;}
+.tag{
+  font-size:11px;font-weight:500;padding:4px 12px;
+  border:1px solid #e5e7eb;border-radius:20px;
+  color:#374151;background:#f9fafb;white-space:nowrap;
+  text-decoration:none;display:inline-block;
+}
+a.tag:hover{border-color:#9ca3af;color:#111;}
+a.tag.signal{background:#f0fdf4;border-color:#86efac;color:#166534;}
+a.tag.signal:hover{border-color:#4ade80;background:#dcfce7;}
+.tag.amber{background:#fefce8;border-color:#fde047;color:#854d0e;}
+
+/* ── ANCHOR NAV ── */
+.anchor-nav{
+  border-bottom:1px solid #e5e7eb;padding:0 32px;
+  display:flex;overflow-x:auto;scrollbar-width:none;
+}
+.anchor-nav::-webkit-scrollbar{display:none;}
+.anchor-nav a{
+  font-size:13px;font-weight:500;color:#6b7280;text-decoration:none;
+  padding:14px 16px;border-bottom:2px solid transparent;white-space:nowrap;
+  transition:color .15s,border-color .15s;
+}
+.anchor-nav a:hover{color:#111;}
+.anchor-nav a.active{color:#0f766e;border-bottom-color:#0f766e;}
+
+/* ── STAT ROW ── */
+.stat-row{
+  padding:0 32px;display:grid;grid-template-columns:repeat(4,1fr);
+  border-bottom:1px solid #e5e7eb;
+}
+.stat{padding:24px 20px;border-right:1px solid #e5e7eb;}
+.stat:last-child{border-right:none;}
+.stat-val{font-size:20px;font-weight:600;letter-spacing:-.02em;color:#111;line-height:1.3;margin-bottom:4px;}
+.stat-label{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#9ca3af;}
+
+/* ── TWO-PANEL LAYOUT ── */
+.layout{display:grid;grid-template-columns:1fr 520px;align-items:start;border-bottom:1px solid #e5e7eb;}
+.main{padding:40px 40px 60px 32px;border-right:1px solid #e5e7eb;}
+.section-heading{
+  font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;
+  color:#9ca3af;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid #e5e7eb;
+}
+.prose{font-size:14px;color:#374151;line-height:1.8;margin-bottom:32px;}
+.prose p+p{margin-top:12px;}
+.divider{border:none;border-top:1px solid #e5e7eb;margin:32px 0;}
+
+.ops-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#e5e7eb;
+  border:1px solid #e5e7eb;border-radius:6px;overflow:hidden;margin-bottom:32px;
+}
+.ops-cell{background:#fff;padding:20px;}
+.ops-cell-label{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#111;margin-bottom:10px;}
+.ops-cell p{font-size:13px;color:#6b7280;line-height:1.65;}
+
+/* Phase list */
+.phase-list{list-style:none;}
+.phase-list li{
+  display:flex;align-items:flex-start;gap:12px;
+  padding:13px 0;border-bottom:1px solid #e5e7eb;
+  font-size:13px;color:#374151;
+}
+.phase-list li:last-child{border-bottom:none;}
+.phase-num{
+  font-size:10px;font-weight:600;letter-spacing:.06em;
+  background:#f0fdf4;border:1px solid #86efac;color:#166534;
+  border-radius:4px;padding:2px 7px;flex-shrink:0;margin-top:1px;
+}
+.phase-text strong{display:block;font-weight:500;color:#111;margin-bottom:2px;}
+.phase-text span{font-size:12px;color:#9ca3af;}
+
+/* ── MAP SECTION ── */
+.map-section{margin-bottom:32px;}
+.map-wrap{
+  border:1px solid #e5e7eb;border-radius:8px;overflow:hidden;
+  background:#fafafa;position:relative;
+}
+.map-wrap svg{display:block;width:100%;height:auto;}
+
+/* Tooltip */
+#map-tooltip{
+  position:fixed;
+  background:#111;color:#fff;
+  font-size:12px;font-family:'Inter',sans-serif;
+  padding:8px 12px;border-radius:6px;
+  pointer-events:none;opacity:0;
+  transition:opacity .15s;
+  z-index:9999;
+  max-width:220px;line-height:1.5;
+}
+#map-tooltip strong{display:block;margin-bottom:2px;font-size:13px;}
+
+/* Legend tabs */
+.map-legend{
+  display:flex;gap:0;border-top:1px solid #e5e7eb;background:#fff;
+}
+.map-legend-item{
+  flex:1;padding:10px 14px;cursor:pointer;
+  display:flex;align-items:center;gap:8px;
+  font-size:12px;color:#6b7280;border-right:1px solid #e5e7eb;
+  transition:background .15s;
+  user-select:none;
+}
+.map-legend-item:last-child{border-right:none;}
+.map-legend-item:hover{background:#f9fafb;}
+.map-legend-item.active{background:#f0fdf4;color:#166534;}
+.map-legend-dot{
+  width:10px;height:10px;border-radius:50%;flex-shrink:0;
+  border:1px solid currentColor;
+}
+.legend-gold .map-legend-dot{background:#FFF9EE;border-color:#B8953F;color:#B8953F;}
+.legend-blue .map-legend-dot{background:#E6F1FB;border-color:#378ADD;color:#378ADD;}
+.legend-gray .map-legend-dot{background:#F1EFE8;border-color:#888780;color:#888780;}
+.legend-gold.active .map-legend-dot{background:#B8953F;}
+.legend-blue.active .map-legend-dot{background:#378ADD;}
+.legend-gray.active .map-legend-dot{background:#888780;}
+
+/* ── RIGHT PANEL ── */
+.right-panel{border-left:1px solid #e5e7eb;}
+.panel-heading{font-size:15px;font-weight:600;letter-spacing:-.01em;margin-bottom:4px;}
+.panel-sub{font-size:12px;color:#6b7280;margin-bottom:20px;}
+.field{margin-bottom:10px;}
+input[type=text]{
+  width:100%;padding:10px 12px;border:1px solid #d1d5db;border-radius:5px;
+  font-family:'Inter',sans-serif;font-size:13px;color:#111;background:#fff;outline:none;
+}
+input[type=text]:focus{border-color:#0f766e;box-shadow:0 0 0 3px rgba(15,118,110,.08);}
+input[type=text]::placeholder{color:#9ca3af;}
+.btn-primary{
+  width:100%;padding:11px;background:#0f766e;color:#fff;border:none;border-radius:5px;
+  font-family:'Inter',sans-serif;font-size:13px;font-weight:500;cursor:pointer;margin-top:4px;
+}
+.btn-primary:hover{background:#0d6460;}
+.form-status{margin-top:8px;font-size:12px;color:#6b7280;text-align:center;min-height:18px;}
+.form-status.success{color:#166534;}
+.form-status.error{color:#991b1b;}
+.panel-divider{border:none;border-top:1px solid #e5e7eb;margin:20px 0;}
+
+/* CTA cards — matching exactly the reference screenshots */
+.map-cta{
+  display:flex;align-items:center;gap:12px;
+  padding:14px 16px;border:1px solid #e5e7eb;border-radius:6px;
+  text-decoration:none;transition:border-color .15s,background .15s;
+}
+.map-cta:hover{border-color:#0f766e;background:#f0fdf4;}
+.map-cta-icon{
+  width:36px;height:36px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+/* Map icon: teal, + symbol, matching screenshot 2 */
+.icon-map{background:#f0fdf4;border:1px solid #86efac;color:#0f766e;font-size:18px;font-weight:400;}
+/* BuyCoop icon: teal, exchange arrows SVG, matching screenshot 1 */
+.icon-exchange{background:#f0fdf4;border:1px solid #86efac;color:#0f766e;}
+/* CoopPay icon: amber, lightning bolt SVG, matching both screenshots */
+.icon-cooppay{background:#fefce8;border:1px solid #fde047;color:#854d0e;}
+.map-cta-text{flex:1;}
+.map-cta-label{font-size:12px;font-weight:600;color:#111;line-height:1.4;}
+.map-cta-sub{font-size:11px;color:#6b7280;}
+.map-cta-arrow{font-size:13px;color:#0f766e;font-weight:600;}
+.also-on-heading{
+  font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;
+  color:#9ca3af;margin-bottom:12px;
+}
+
+/* ── FOOTER ── */
+.footer{
+  border-top:1px solid #e5e7eb;padding:18px 32px;
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;
+}
+.footer-copy{font-size:12px;color:#9ca3af;}
+.footer-link{font-size:12px;color:#0f766e;text-decoration:none;font-weight:500;}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  .layout{grid-template-columns:1fr;}
+  .main{border-right:none;padding:28px 16px 40px;}
+  .right-panel{border-left:none;border-top:1px solid #e5e7eb;}
+  .right-panel > div{position:static !important;max-height:none !important;overflow:visible !important;padding:28px 16px 40px !important;}
+}
+@media(max-width:768px){
+  .topbar{padding:0 16px;}
+  .topbar-nav{display:none;}
+  .page-header{padding:24px 16px 20px;}
+  .page-header h1{font-size:22px;}
+  .anchor-nav{padding:0 16px;}
+  .stat-row{grid-template-columns:1fr 1fr;padding:0 16px;}
+  .stat{padding:18px 16px;border-right:none;border-bottom:1px solid #e5e7eb;}
+  .stat:nth-child(odd){border-right:1px solid #e5e7eb;}
+  .stat:nth-last-child(-n+2){border-bottom:none;}
+  .ops-grid{grid-template-columns:1fr;}
+  .footer{padding:16px;}
+  .map-legend{flex-wrap:wrap;}
+  .map-legend-item{flex:1 1 50%;border-bottom:1px solid #e5e7eb;}
+}
+@media(max-width:480px){
+  .stat-row{grid-template-columns:1fr;}
+  .stat{border-right:none !important;border-bottom:1px solid #e5e7eb !important;padding:16px !important;}
+  .stat:last-child{border-bottom:none !important;}
+}
+</style>
+</head>
+<body>
+
+<div id="map-tooltip"></div>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <a href="https://buy.coop" class="topbar-brand">The Co-operative Exchange</a>
+  <div class="topbar-nav">
+    <a href="https://buy.coop/collections/featured-suppliers">Supply Signals</a>
+    <a href="https://buy.coop/pages/partnerships">Partnerships</a>
+    <a href="https://map.buy.coop" class="active">Global Supply Map</a>
+    <a href="https://buy.coop/pages/data-intelligence">Data Intelligence</a>
+  </div>
+</nav>
+
+<!-- PAGE HEADER -->
+<div class="page-header" id="top">
+  <div class="page-header-meta">
+    <span class="live-dot"></span>
+    Project Dossier &middot; Philippines &middot; Bacolod City, Western Visayas
+  </div>
+  <h1>Cooperative Memorial Access Program</h1>
+  <div class="page-header-institution">Divine Mercy Memorial Service Cooperative &middot; Teresa Development Corporation</div>
+  <div class="page-header-address">Christ the Redeemer Columbarium, Rose Lawns Memorial Park, Brgy. Bata, Bacolod City, Negros Occidental</div>
+  <div class="tag-row">
+    <a href="#interest" class="tag signal">Open to Cooperative Participation</a>
+    <a href="#program" class="tag">Memorial Services</a>
+    <a href="#program" class="tag">Cooperative Finance</a>
+    <a href="#location" class="tag">Bacolod City</a>
+    <span class="tag amber">Teresa Development Corp.</span>
+    <span class="tag">Est. 2026</span>
+  </div>
+</div>
+
+<!-- ANCHOR NAV -->
+<nav class="anchor-nav">
+  <a href="#about" class="active">About</a>
+  <a href="#program">Program</a>
+  <a href="#channel">Channel</a>
+  <a href="#location">Location</a>
+  <a href="#phases">Phases</a>
+  <a href="#interest">Express Interest</a>
+</nav>
+
+<!-- STAT ROW -->
+<div class="stat-row">
+  <div class="stat"><div class="stat-val">40,000+</div><div class="stat-label">Vault Capacity</div></div>
+  <div class="stat"><div class="stat-val">2 ha</div><div class="stat-label">Complex Area</div></div>
+  <div class="stat"><div class="stat-val">6</div><div class="stat-label">Target Federations</div></div>
+  <div class="stat"><div class="stat-val">Hybrid</div><div class="stat-label">Recommended Structure</div></div>
+</div>
+
+<!-- TWO-PANEL LAYOUT -->
+<div class="layout">
+<div class="main">
+
+  <!-- ABOUT -->
+  <div id="about" style="scroll-margin-top:115px;">
+    <div class="section-heading">About the Project</div>
+    <div class="prose">
+      <p>The Cooperative Memorial Access Program is a structured legal-commercial arrangement anchored on Christ the Redeemer Columbarium — the first of its kind in the Philippines — developed by Teresa Development Corporation and located within Rose Lawns Memorial Park in Brgy. Bata, Bacolod City.</p>
+      <p>The program is not a referral scheme. It is a cooperative channel strategy: Divine Mercy Memorial Service Cooperative organizes member demand across its federation, routes that demand through participating member-cooperatives, and supports access to memorial services through cooperative credit, member education, and institutional documentation. TDC provides the inventory, the platform, and the service capability. The federation provides structured access and financing pathways.</p>
+      <p>Optional service riders through Rose Lawns Memorial Park and Acropolis Gardens — both TDC properties on the same site — are available as supplementary components once the anchor program is established.</p>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- PROGRAM -->
+  <div id="program" style="scroll-margin-top:115px;">
+    <div class="section-heading">Program Structure</div>
+    <div class="ops-grid">
+      <div class="ops-cell">
+        <div class="ops-cell-label">Anchor Asset</div>
+        <p>Christ the Redeemer Columbarium — a 2-hectare facility with 40,000+ vault capacity, the first modern columbarium complex of its kind in the Philippines. Located within Rose Lawns Memorial Park, Brgy. Bata.</p>
+      </div>
+      <div class="ops-cell">
+        <div class="ops-cell-label">Cooperative Channel</div>
+        <p>Participating cooperatives organize member demand, extend financing, handle intake documentation, and remit payments under agreed protocols. TDC remains the primary operator and controls the official vault registry.</p>
+      </div>
+      <div class="ops-cell">
+        <div class="ops-cell-label">Financing Layer</div>
+        <p>Member-cooperatives evaluate credit and extend financing to their own members. TDC is not exposed to individual credit risk unless expressly agreed. Vault rights are issued upon confirmed payment milestones.</p>
+      </div>
+      <div class="ops-cell">
+        <div class="ops-cell-label">Service Riders</div>
+        <p>Optional riders through Rose Lawns Memorial Park and Acropolis Gardens: cremation, viewing chapel, urn, hearse, interment, plaque, and memorial ceremony. Priced separately from the core vault product.</p>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- CHANNEL ARCHITECTURE -->
+  <div id="channel" style="scroll-margin-top:115px;">
+    <div class="section-heading">Channel Architecture</div>
+    <div class="prose" style="margin-bottom:16px;">
+      <p>TDC provides the inventory and platform. Divine Mercy Federation coordinates. Member-cooperatives extend credit and handle intake. Members and families receive dignified access with financing options.</p>
+    </div>
+    <!-- Chain as styled list -->
+    <div style="border:1px solid #e5e7eb;border-radius:6px;overflow:hidden;margin-bottom:32px;">
+      <div style="padding:16px 20px;border-bottom:1px solid #e5e7eb;display:flex;gap:14px;align-items:flex-start;">
+        <div style="font-size:11px;font-weight:600;letter-spacing:.06em;color:#0f766e;background:#f0fdf4;border:1px solid #86efac;border-radius:4px;padding:2px 8px;flex-shrink:0;margin-top:1px;">TDC</div>
+        <div><div style="font-size:13px;font-weight:500;color:#111;margin-bottom:2px;">Teresa Development Corporation</div><div style="font-size:12px;color:#9ca3af;">Inventory · operations · service platform · official vault registry</div></div>
+      </div>
+      <div style="padding:8px 20px;border-bottom:1px solid #e5e7eb;font-size:12px;color:#d1d5db;">↓</div>
+      <div style="padding:16px 20px;border-bottom:1px solid #e5e7eb;display:flex;gap:14px;align-items:flex-start;">
+        <div style="font-size:11px;font-weight:600;letter-spacing:.06em;color:#0f766e;background:#f0fdf4;border:1px solid #86efac;border-radius:4px;padding:2px 8px;flex-shrink:0;margin-top:1px;">FED</div>
+        <div><div style="font-size:13px;font-weight:500;color:#111;margin-bottom:2px;">Divine Mercy Memorial Service Cooperative</div><div style="font-size:12px;color:#9ca3af;">Negotiates terms · structures documentation · coordinates participating cooperatives</div></div>
+      </div>
+      <div style="padding:8px 20px;border-bottom:1px solid #e5e7eb;font-size:12px;color:#d1d5db;">↓</div>
+      <div style="padding:16px 20px;border-bottom:1px solid #e5e7eb;display:flex;gap:14px;align-items:flex-start;">
+        <div style="font-size:11px;font-weight:600;letter-spacing:.06em;color:#0f766e;background:#f0fdf4;border:1px solid #86efac;border-radius:4px;padding:2px 8px;flex-shrink:0;margin-top:1px;">MPC</div>
+        <div><div style="font-size:13px;font-weight:500;color:#111;margin-bottom:2px;">Participating Member-Cooperatives</div><div style="font-size:12px;color:#9ca3af;">Credit evaluation · member financing · intake documentation · payment remittance</div></div>
+      </div>
+      <div style="padding:8px 20px;border-bottom:1px solid #e5e7eb;font-size:12px;color:#d1d5db;">↓</div>
+      <div style="padding:16px 20px;display:flex;gap:14px;align-items:flex-start;">
+        <div style="font-size:11px;font-weight:600;letter-spacing:.06em;color:#0f766e;background:#f0fdf4;border:1px solid #86efac;border-radius:4px;padding:2px 8px;flex-shrink:0;margin-top:1px;">FAM</div>
+        <div><div style="font-size:13px;font-weight:500;color:#111;margin-bottom:2px;">Individual Members &amp; Families</div><div style="font-size:12px;color:#9ca3af;">Vault acquisition · optional service riders · dignified memorial access with financing</div></div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- LOCATION MAP -->
+  <div id="location" style="scroll-margin-top:115px;">
+    <div class="section-heading">Location &amp; Strategic Proximity</div>
+    <div class="prose" style="margin-bottom:16px;">
+      <p>Brgy. Bata positions the complex within one of Bacolod's most active growth corridors — flanked by prestige residential, leisure, and institutional infrastructure within 1–3 km, and connected to regional retail hubs, port access, and Silay Airport within 15 km.</p>
+    </div>
+
+    <!-- Interactive map -->
+    <div class="map-section">
+      <div class="map-wrap">
+        <svg id="proximity-map" viewBox="0 0 780 680" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="ag" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+              <path d="M2 1L8 5L2 9" fill="none" stroke="#B8953F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </marker>
+            <marker id="ab" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+              <path d="M2 1L8 5L2 9" fill="none" stroke="#185FA5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </marker>
+            <marker id="agr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+              <path d="M2 1L8 5L2 9" fill="none" stroke="#5F5E5A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </marker>
+          </defs>
+
+          <!-- Background -->
+          <rect width="780" height="680" fill="#fafafa"/>
+
+          <!-- Title -->
+          <text font-size="13" font-weight="600" text-anchor="middle" x="390" y="26" fill="#111" font-family="Inter, sans-serif">Strategic Location — Brgy. Bata, Bacolod City</text>
+          <text font-size="10" text-anchor="middle" x="390" y="42" fill="#9ca3af" font-family="Inter, sans-serif">Hover landmarks to explore · click to filter by tier</text>
+          <line x1="40" y1="50" x2="740" y2="50" stroke="#e5e7eb" stroke-width="0.5"/>
+
+          <!-- Compass -->
+          <text font-size="10" font-weight="600" text-anchor="middle" x="390" y="72" fill="#B8953F" font-family="Inter, sans-serif">N ↑</text>
+
+          <!-- Center: 390, 390 -->
+
+          <!-- Rings -->
+          <circle cx="390" cy="390" r="90"  fill="#B8953F" opacity="0.04" class="ring ring-gold"/>
+          <circle cx="390" cy="390" r="90"  fill="none" stroke="#B8953F" stroke-width="1" stroke-dasharray="2 4" opacity="0.8" class="ring ring-gold"/>
+          <text font-size="9" text-anchor="start" x="395" y="303" fill="#B8953F" font-family="Inter, sans-serif" class="ring-label ring-gold-label">1–3 km</text>
+
+          <circle cx="390" cy="390" r="180" fill="#1B2A4A" opacity="0.03" class="ring ring-blue"/>
+          <circle cx="390" cy="390" r="180" fill="none" stroke="#B4B2A9" stroke-width="0.8" stroke-dasharray="3 3" class="ring ring-blue"/>
+          <text font-size="9" text-anchor="start" x="395" y="213" fill="#888780" font-family="Inter, sans-serif" class="ring-label ring-blue-label">4–7 km</text>
+
+          <circle cx="390" cy="390" r="270" fill="#1B2A4A" opacity="0.02" class="ring ring-gray"/>
+          <circle cx="390" cy="390" r="270" fill="none" stroke="#D3D1C7" stroke-width="0.8" stroke-dasharray="5 4" class="ring ring-gray"/>
+          <text font-size="9" text-anchor="start" x="395" y="122" fill="#888780" font-family="Inter, sans-serif" class="ring-label ring-gray-label">8–15 km</text>
+
+          <!-- Sea hint -->
+          <text font-size="9" text-anchor="middle" x="106" y="382" fill="#B5D4F4" font-family="Inter, sans-serif" font-style="italic">Guimaras</text>
+          <text font-size="9" text-anchor="middle" x="106" y="394" fill="#B5D4F4" font-family="Inter, sans-serif" font-style="italic">Strait</text>
+
+          <!-- CENTER -->
+          <circle cx="390" cy="390" r="42" fill="#FFFFFF" stroke="#B8953F" stroke-width="2.5"/>
+          <circle cx="390" cy="390" r="40" fill="#1B2A4A"/>
+          <text font-size="8.5" font-weight="600" text-anchor="middle" x="390" y="381" fill="#FFFFFF" font-family="Inter, sans-serif">Christ the</text>
+          <text font-size="8.5" font-weight="600" text-anchor="middle" x="390" y="392" fill="#FFFFFF" font-family="Inter, sans-serif">Redeemer</text>
+          <text font-size="7.5" text-anchor="middle" x="390" y="403" fill="#B8953F" font-family="Inter, sans-serif">Columbarium</text>
+          <text font-size="7" text-anchor="middle" x="390" y="414" fill="#9FB0C8" font-family="Inter, sans-serif">Brgy. Bata</text>
+
+          <!-- ── INNER RING LANDMARKS — gold ── -->
+
+          <!-- The Ruins — east, 1.8 km -->
+          <line x1="430" y1="390" x2="476" y2="390" stroke="#B8953F" stroke-width="0.9" marker-end="url(#ag)" class="arrow arrow-gold"/>
+          <g class="landmark landmark-gold" data-name="The Ruins" data-dist="1.8 km east" data-desc="Heritage mansion landmark. Talisay City border." data-tier="gold">
+            <rect x="478" y="372" width="100" height="36" rx="5" fill="#FFFFFF" stroke="#B8953F" stroke-width="1.2"/>
+            <text font-size="11" font-weight="500" text-anchor="middle" x="528" y="387" fill="#1B2A4A" font-family="Inter, sans-serif">The Ruins</text>
+            <text font-size="9" text-anchor="middle" x="528" y="400" fill="#B8953F" font-family="Inter, sans-serif">~1.8 km · east</text>
+          </g>
+
+          <!-- Tractor Cafe — ENE, 1.6 km -->
+          <line x1="420" y1="374" x2="455" y2="354" stroke="#B8953F" stroke-width="0.9" marker-end="url(#ag)" class="arrow arrow-gold"/>
+          <g class="landmark landmark-gold" data-name="Tractor Cafe" data-dist="1.6 km east-northeast" data-desc="Lifestyle dining destination. Hacienda Sta. Maria, Talisay." data-tier="gold">
+            <rect x="455" y="326" width="110" height="36" rx="5" fill="#FFFFFF" stroke="#B8953F" stroke-width="1.2"/>
+            <text font-size="11" font-weight="500" text-anchor="middle" x="510" y="341" fill="#1B2A4A" font-family="Inter, sans-serif">Tractor Cafe</text>
+            <text font-size="9" text-anchor="middle" x="510" y="354" fill="#B8953F" font-family="Inter, sans-serif">~1.6 km · ENE</text>
+          </g>
+
+          <!-- Negros Golf & CC — SSE, 1.5 km -->
+          <line x1="396" y1="422" x2="411" y2="447" stroke="#B8953F" stroke-width="0.9" marker-end="url(#ag)" class="arrow arrow-gold"/>
+          <g class="landmark landmark-gold" data-name="Negros Golf &amp; Country Club" data-dist="1.5 km south-southeast" data-desc="Premier golf and leisure destination. Bata Subdivision." data-tier="gold">
+            <rect x="306" y="450" width="152" height="36" rx="5" fill="#FFFFFF" stroke="#B8953F" stroke-width="1.2"/>
+            <text font-size="11" font-weight="500" text-anchor="middle" x="382" y="465" fill="#1B2A4A" font-family="Inter, sans-serif">Negros Golf &amp; CC</text>
+            <text font-size="9" text-anchor="middle" x="382" y="478" fill="#B8953F" font-family="Inter, sans-serif">~1.5 km · SSE</text>
+          </g>
+
+          <!-- Rose Lawns / Acropolis — west, same site -->
+          <line x1="348" y1="390" x2="308" y2="390" stroke="#B8953F" stroke-width="0.9" marker-end="url(#ag)" class="arrow arrow-gold"/>
+          <g class="landmark landmark-gold" data-name="Rose Lawns / Acropolis Gardens" data-dist="Same site" data-desc="TDC memorial park and gardens. Same compound as the Columbarium." data-tier="gold">
+            <rect x="180" y="373" width="126" height="36" rx="5" fill="#FFFFFF" stroke="#B8953F" stroke-width="1.2"/>
+            <text font-size="11" font-weight="500" text-anchor="middle" x="243" y="388" fill="#1B2A4A" font-family="Inter, sans-serif">Rose Lawns /</text>
+            <text font-size="9" text-anchor="middle" x="243" y="401" fill="#B8953F" font-family="Inter, sans-serif">Acropolis · same site</text>
+          </g>
+
+          <!-- Forbes Hill — east, 3 km -->
+          <line x1="430" y1="394" x2="475" y2="408" stroke="#B8953F" stroke-width="0.9" marker-end="url(#ag)" class="arrow arrow-gold"/>
+          <g class="landmark landmark-gold" data-name="Forbes Hill" data-dist="3 km east" data-desc="Prime residential and commercial district. Airport access road." data-tier="gold">
+            <rect x="476" y="404" width="92" height="36" rx="5" fill="#FFFFFF" stroke="#B8953F" stroke-width="1.2"/>
+            <text font-size="11" font-weight="500" text-anchor="middle" x="522" y="419" fill="#1B2A4A" font-family="Inter, sans-serif">Forbes Hill</text>
+            <text font-size="9" text-anchor="middle" x="522" y="432" fill="#B8953F" font-family="Inter, sans-serif">~3 km · east</text>
+          </g>
+
+          <!-- Saludad / Phinma — SE, 2.5 km -->
+          <line x1="420" y1="415" x2="443" y2="440" stroke="#B8953F" stroke-width="0.9" marker-end="url(#ag)" class="arrow arrow-gold"/>
+          <g class="landmark landmark-gold" data-name="Saludad by Phinma" data-dist="2.5 km southeast" data-desc="Premium residential development. Phinma Corp. project." data-tier="gold">
+            <rect x="442" y="442" width="126" height="36" rx="5" fill="#FFFFFF" stroke="#B8953F" stroke-width="1.2"/>
+            <text font-size="11" font-weight="500" text-anchor="middle" x="505" y="457" fill="#1B2A4A" font-family="Inter, sans-serif">Saludad / Phinma</text>
+            <text font-size="9" text-anchor="middle" x="505" y="470" fill="#B8953F" font-family="Inter, sans-serif">~2.5 km · SE</text>
+          </g>
+
+          <!-- ── MID RING LANDMARKS — blue ── -->
+
+          <!-- Banago Port — west, 7 km -->
+          <line x1="345" y1="386" x2="218" y2="386" stroke="#185FA5" stroke-width="0.7" stroke-dasharray="4 2" marker-end="url(#ab)" opacity="0.8" class="arrow arrow-blue"/>
+          <g class="landmark landmark-blue" data-name="Banago Port" data-dist="7 km west" data-desc="Primary passenger and cargo port. Sea access to Iloilo and Manila." data-tier="blue">
+            <rect x="104" y="368" width="112" height="36" rx="5" fill="#E6F1FB" stroke="#378ADD" stroke-width="1.2"/>
+            <text font-size="11" font-weight="500" text-anchor="middle" x="160" y="383" fill="#042C53" font-family="Inter, sans-serif">Banago Port</text>
+            <text font-size="9" text-anchor="middle" x="160" y="396" fill="#185FA5" font-family="Inter, sans-serif">~7 km · west</text>
+          </g>
+
+          <!-- Nara Rockwell — SSE, 5.3 km -->
+          <line x1="395" y1="432" x2="432" y2="512" stroke="#185FA5" stroke-width="0.7" stroke-dasharray="4 2" marker-end="url(#ab)" opacity="0.8" class="arrow arrow-blue"/>
+          <g class="landmark landmark-blue" data-name="Nara Residences by Rockwell" data-dist="5.3 km south-southeast" data-desc="Landmark premium residential development. Rockwell brand." data-tier="blue">
+            <rect x="370" y="514" width="148" height="36" rx="5" fill="#E6F1FB" stroke="#378ADD" stroke-width="1.2"/>
+            <text font-size="11" font-weight="500" text-anchor="middle" x="444" y="529" fill="#042C53" font-family="Inter, sans-serif">Nara Rockwell</text>
+            <text font-size="9" text-anchor="middle" x="444" y="542" fill="#185FA5" font-family="Inter, sans-serif">~5.3 km · SSE</text>
+          </g>
+
+          <!-- Ayala Northpoint — NE, 4.5 km -->
+          <line x1="414" y1="362" x2="458" y2="308" stroke="#185FA5" stroke-width="0.7" stroke-dasharray="4 2" marker-end="url(#ab)" opacity="0.8" class="arrow arrow-blue"/>
+          <g class="landmark landmark-blue" data-name="Ayala Northpoint" data-dist="4.5 km northeast" data-desc="Integrated mixed-use township. The District mall, Talisay City." data-tier="blue">
+            <rect x="458" y="268" width="146" height="36" rx="5" fill="#E6F1FB" stroke="#378ADD" stroke-width="1.2"/>
+            <text font-size="11" font-weight="500" text-anchor="middle" x="531" y="283" fill="#042C53" font-family="Inter, sans-serif">Ayala Northpoint</text>
+            <text font-size="9" text-anchor="middle" x="531" y="296" fill="#185FA5" font-family="Inter, sans-serif">~4.5 km · NE</text>
+          </g>
+
+          <!-- Toyota Negros Occ. — NNE, 5 km -->
+          <line x1="408" y1="356" x2="448" y2="260" stroke="#185FA5" stroke-width="0.7" stroke-dasharray="4 2" marker-end="url(#ab)" opacity="0.8" class="arrow arrow-blue"/>
+          <g class="landmark landmark-blue" data-name="Toyota Negros Occidental" data-dist="5 km north-northeast" data-desc="National Highway, Brgy. Zone 15, Talisay City. Main dealership." data-tier="blue">
+            <rect x="448" y="215" width="178" height="36" rx="5" fill="#E6F1FB" stroke="#378ADD" stroke-width="1.2"/>
+            <text font-size="11" font-weight="500" text-anchor="middle" x="537" y="230" fill="#042C53" font-family="Inter, sans-serif">Toyota Negros Occ.</text>
+            <text font-size="9" text-anchor="middle" x="537" y="243" fill="#185FA5" font-family="Inter, sans-serif">~5 km · NNE</text>
+          </g>
+
+          <!-- ── OUTER RING LANDMARKS — gray ── -->
+
+          <!-- Silay Airport — due north, 13 km -->
+          <line x1="390" y1="348" x2="390" y2="128" stroke="#5F5E5A" stroke-width="0.6" stroke-dasharray="3 3" marker-end="url(#agr)" opacity="0.6" class="arrow arrow-gray"/>
+          <g class="landmark landmark-gray" data-name="Silay Airport (BCD)" data-dist="13 km due north" data-desc="Bacolod-Silay International Airport. Daily flights to Manila, Cebu, Davao." data-tier="gray">
+            <rect x="314" y="86" width="152" height="36" rx="5" fill="#F1EFE8" stroke="#888780" stroke-width="1"/>
+            <text font-size="11" font-weight="500" text-anchor="middle" x="390" y="101" fill="#2C2C2A" font-family="Inter, sans-serif">Silay Airport (BCD)</text>
+            <text font-size="9" text-anchor="middle" x="390" y="114" fill="#5F5E5A" font-family="Inter, sans-serif">~13 km · due north</text>
+          </g>
+
+          <!-- BREDCO Port — WSW, 7 km -->
+          <line x1="352" y1="410" x2="220" y2="485" stroke="#5F5E5A" stroke-width="0.6" stroke-dasharray="3 3" marker-end="url(#agr)" opacity="0.55" class="arrow arrow-gray"/>
+          <g class="landmark landmark-gray" data-name="BREDCO Port" data-dist="7 km west-southwest" data-desc="Reclamation area seaport. Passenger ferries to Iloilo and Manila." data-tier="gray">
+            <rect x="60" y="458" width="126" height="36" rx="5" fill="#F1EFE8" stroke="#888780" stroke-width="1"/>
+            <text font-size="11" font-weight="500" text-anchor="middle" x="123" y="473" fill="#2C2C2A" font-family="Inter, sans-serif">BREDCO Port</text>
+            <text font-size="9" text-anchor="middle" x="123" y="486" fill="#5F5E5A" font-family="Inter, sans-serif">~7 km · WSW</text>
+          </g>
+
+          <!-- SM City — SW, 7 km -->
+          <line x1="358" y1="422" x2="232" y2="524" stroke="#5F5E5A" stroke-width="0.6" stroke-dasharray="3 3" marker-end="url(#agr)" opacity="0.55" class="arrow arrow-gray"/>
+          <g class="landmark landmark-gray" data-name="SM City Bacolod" data-dist="7 km southwest" data-desc="Regional shopping mall. Reclamation Area, Bacolod City." data-tier="gray">
+            <rect x="98" y="526" width="110" height="36" rx="5" fill="#F1EFE8" stroke="#888780" stroke-width="1"/>
+            <text font-size="11" font-weight="500" text-anchor="middle" x="153" y="541" fill="#2C2C2A" font-family="Inter, sans-serif">SM City</text>
+            <text font-size="9" text-anchor="middle" x="153" y="554" fill="#5F5E5A" font-family="Inter, sans-serif">~7 km · SW</text>
+          </g>
+
+          <!-- Ayala Malls — SSW, 7.5 km -->
+          <line x1="366" y1="426" x2="286" y2="554" stroke="#5F5E5A" stroke-width="0.6" stroke-dasharray="3 3" marker-end="url(#agr)" opacity="0.55" class="arrow arrow-gray"/>
+          <g class="landmark landmark-gray" data-name="Ayala Malls Capitol Central" data-dist="7.5 km south-southwest" data-desc="Ayala mall flagship. Capitol area, Bacolod City." data-tier="gray">
+            <rect x="218" y="558" width="136" height="36" rx="5" fill="#F1EFE8" stroke="#888780" stroke-width="1"/>
+            <text font-size="11" font-weight="500" text-anchor="middle" x="286" y="573" fill="#2C2C2A" font-family="Inter, sans-serif">Ayala Malls</text>
+            <text font-size="9" text-anchor="middle" x="286" y="586" fill="#5F5E5A" font-family="Inter, sans-serif">~7.5 km · SSW</text>
+          </g>
+
+        </svg><!-- /svg -->
+
+        <!-- Legend tabs -->
+        <div class="map-legend">
+          <div class="map-legend-item legend-gold active" data-tier="gold" onclick="filterTier(this,'gold')">
+            <div class="map-legend-dot"></div>
+            <span>1–3 km · Immediate</span>
+          </div>
+          <div class="map-legend-item legend-blue" data-tier="blue" onclick="filterTier(this,'blue')">
+            <div class="map-legend-dot"></div>
+            <span>4–7 km · District</span>
+          </div>
+          <div class="map-legend-item legend-gray" data-tier="gray" onclick="filterTier(this,'gray')">
+            <div class="map-legend-dot"></div>
+            <span>8–15 km · Regional</span>
+          </div>
+          <div class="map-legend-item" data-tier="all" onclick="filterTier(this,'all')" style="color:#0f766e;font-weight:500;">
+            <div class="map-legend-dot" style="background:#f0fdf4;border-color:#86efac;"></div>
+            <span>Show all</span>
+          </div>
+        </div>
+
+      </div><!-- /map-wrap -->
+    </div><!-- /map-section -->
+  </div>
+
+  <hr class="divider">
+
+  <!-- PHASES -->
+  <div id="phases" style="scroll-margin-top:115px;">
+    <div class="section-heading">Program Phases</div>
+    <ul class="phase-list">
+      <li><span class="phase-num">I</span><div class="phase-text"><strong>Exploratory Authority</strong><span>Board resolution · conflict disclosure · TDC discussion letter</span></div></li>
+      <li><span class="phase-num">II</span><div class="phase-text"><strong>TDC Term Sheet</strong><span>Inventory availability · pricing · block allocation · service rider menu</span></div></li>
+      <li><span class="phase-num">III</span><div class="phase-text"><strong>Demand Sounding</strong><span>Member-cooperative survey · financing appetite · pilot tranche sizing</span></div></li>
+      <li><span class="phase-num">IV</span><div class="phase-text"><strong>Legal Documentation</strong><span>Master framework · reservation agreement · participating cooperative agreement · intake forms</span></div></li>
+      <li><span class="phase-num">V</span><div class="phase-text"><strong>Pilot Launch</strong><span>Initial tranche · first drawdown · registry reconciliation · pilot report</span></div></li>
+      <li><span class="phase-num">VI</span><div class="phase-text"><strong>Expansion</strong><span>Exercise option · add cooperatives · increase inventory allocation · scale financing</span></div></li>
+    </ul>
+  </div>
+
+</div><!-- /main -->
+
+<!-- RIGHT PANEL -->
+<div class="right-panel" id="interest" style="scroll-margin-top:115px;">
+  <div style="position:sticky;top:52px;background:#fff;padding:28px 32px 32px;max-height:calc(100vh - 52px);overflow-y:auto;scrollbar-width:none;">
+
+    <div class="panel-heading">Express Program Interest</div>
+    <div class="panel-sub">Routed through The Co-operative Exchange</div>
+
+    <form id="coopForm">
+      <!-- Hidden context fields — logged as columns in the Google Sheet -->
+      <input name="project_name" value="Cooperative Memorial Access Program" type="text" style="display:none;">
+      <input name="anchor_asset" value="Christ the Redeemer Columbarium, Brgy. Bata, Bacolod City" type="text" style="display:none;">
+      <input name="country" value="Philippines" type="text" style="display:none;">
+      <!-- Honeypot -->
+      <input type="text" name="website" style="position:absolute;left:-9999px;" tabindex="-1" autocomplete="off">
+
+      <div class="field">
+        <input type="text" name="location" placeholder="Your name or cooperative" required>
+      </div>
+      <div class="field">
+        <input type="text" name="your_location" placeholder="Your location or region">
+      </div>
+      <div class="field">
+        <input type="text" name="supply" placeholder="How does your cooperative intend to participate?" required>
+      </div>
+      <div class="field">
+        <input type="text" name="coverage" placeholder="Estimated number of member families">
+      </div>
+      <div class="field">
+        <input type="text" name="contact" placeholder="Email or mobile" required>
+      </div>
+      <button type="submit" class="btn-primary" id="submitBtn">Send Participation Inquiry</button>
+      <div id="formStatus" class="form-status"></div>
+    </form>
+
+    <hr class="panel-divider">
+
+    <!-- ALSO ON THE EXCHANGE heading -->
+    <div class="also-on-heading">Also on the Exchange</div>
+
+    <!-- BuyCoop — exchange arrows icon (matches screenshot 1 exactly) -->
+    <a href="https://buy.coop" class="map-cta" style="margin-bottom:12px;">
+      <div class="map-cta-icon icon-exchange">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 014-4h14"/>
+          <polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 01-4 4H3"/>
+        </svg>
+      </div>
+      <div class="map-cta-text">
+        <div class="map-cta-label">The Co-operative Exchange</div>
+        <div class="map-cta-sub">Infrastructure for the Cooperative Economy · buy.coop</div>
+      </div>
+      <div class="map-cta-arrow">→</div>
+    </a>
+
+    <!-- CoopPay — lightning bolt icon (matches both screenshots exactly) -->
+    <a href="https://pay.buy.coop" class="map-cta">
+      <div class="map-cta-icon icon-cooppay">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+        </svg>
+      </div>
+      <div class="map-cta-text">
+        <div class="map-cta-label">CoopPay — The Payment Rail for Cooperative Commerce</div>
+        <div class="map-cta-sub">pay.buy.coop</div>
+      </div>
+      <div class="map-cta-arrow">→</div>
+    </a>
+    <div style="font-size:11px;color:#9ca3af;line-height:1.6;margin-top:8px;padding:0 4px;">
+      The world's first Lightning Network super app built by and for cooperatives
+    </div>
+
+    <hr class="panel-divider">
+
+    <!-- Global Supply Map — + icon (matches screenshot 2) -->
+    <a href="https://map.buy.coop" class="map-cta">
+      <div class="map-cta-icon icon-map" style="font-size:20px;line-height:1;">+</div>
+      <div class="map-cta-text">
+        <div class="map-cta-label">Add your cooperative to the global supply map</div>
+        <div class="map-cta-sub">map.buy.coop</div>
+      </div>
+      <div class="map-cta-arrow">→</div>
+    </a>
+
+  </div>
+</div><!-- /right-panel -->
+
+</div><!-- /layout -->
+
+<!-- FOOTER -->
+<div class="footer">
+  <span class="footer-copy">© <span id="footerYear"></span> The Co-operative Exchange</span>
+  <a href="https://www.buy.coop" class="footer-link">www.buy.coop</a>
+</div>
+
+<script>
+document.getElementById('footerYear').textContent = new Date().getFullYear();
+
+/* ── Smooth scroll ── */
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const target = document.getElementById(a.getAttribute('href').slice(1));
+    if(target){ e.preventDefault(); target.scrollIntoView({behavior:'smooth',block:'start'}); }
+  });
+});
+
+/* ── Scroll-spy ── */
+const sections = ['about','program','channel','location','phases','interest'];
+const navLinks = document.querySelectorAll('.anchor-nav a');
+function setActiveAnchor(){
+  let current = 'about';
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if(el && window.scrollY >= el.getBoundingClientRect().top + window.scrollY - 130) current = id;
+  });
+  navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + current));
+}
+window.addEventListener('scroll', setActiveAnchor, {passive:true});
+
+/* ── MAP: Tooltip ── */
+const tooltip = document.getElementById('map-tooltip');
+document.querySelectorAll('.landmark').forEach(g => {
+  g.style.cursor = 'pointer';
+  g.addEventListener('mouseenter', e => {
+    const name = g.dataset.name;
+    const dist = g.dataset.dist;
+    const desc = g.dataset.desc;
+    tooltip.innerHTML = `<strong>${name}</strong>${dist}<br><span style="color:#9ca3af;font-size:11px;">${desc}</span>`;
+    tooltip.style.opacity = '1';
+  });
+  g.addEventListener('mousemove', e => {
+    tooltip.style.left = (e.clientX + 14) + 'px';
+    tooltip.style.top  = (e.clientY - 10) + 'px';
+  });
+  g.addEventListener('mouseleave', () => {
+    tooltip.style.opacity = '0';
+  });
+  // Click: scroll to interest form
+  g.addEventListener('click', () => {
+    document.getElementById('interest').scrollIntoView({behavior:'smooth',block:'start'});
+  });
+});
+
+/* ── MAP: Tier filter ── */
+let activeTier = 'gold';
+function filterTier(btn, tier) {
+  activeTier = tier;
+  // Update legend buttons
+  document.querySelectorAll('.map-legend-item').forEach(el => el.classList.remove('active'));
+  btn.classList.add('active');
+
+  const map = document.getElementById('proximity-map');
+  // Fade landmarks and arrows
+  ['gold','blue','gray'].forEach(t => {
+    const show = (tier === 'all' || tier === t);
+    map.querySelectorAll('.landmark-' + t).forEach(el => {
+      el.style.opacity = show ? '1' : '0.12';
+      el.style.transition = 'opacity .3s';
+    });
+    map.querySelectorAll('.arrow-' + t).forEach(el => {
+      el.style.opacity = show ? (t === 'gold' ? '1' : t === 'blue' ? '0.8' : '0.55') : '0.06';
+      el.style.transition = 'opacity .3s';
+    });
+    // Ring emphasis
+    map.querySelectorAll('.ring-' + t).forEach(el => {
+      el.style.opacity = show ? '1' : '0.2';
+      el.style.transition = 'opacity .3s';
+    });
+    map.querySelectorAll('.ring-' + t + '-label').forEach(el => {
+      el.style.opacity = show ? '1' : '0.2';
+    });
+  });
+  tooltip.style.opacity = '0';
+}
+
+/* ── FORM: Google Apps Script endpoint (same as Koop King) ── */
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby4Oo4RHZj6wOaWfvkghTLG7JHVMFXEMKdcV4DJhXOFaP0UYljypZEfj6vSkt3VCPNXAA/exec";
+
+document.getElementById('coopForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  const form = e.target;
+  const status = document.getElementById('formStatus');
+  const btn = document.getElementById('submitBtn');
+  if(btn.disabled) return;
+  btn.disabled = true;
+  btn.textContent = 'Submitting...';
+  fetch(SCRIPT_URL, {method:'POST', body: new FormData(form)})
+    .then(r => r.text())
+    .then(() => {
+      status.textContent = 'Inquiry received. The Exchange will follow up.';
+      status.className = 'form-status success';
+      form.reset();
+      btn.disabled = false;
+      btn.textContent = 'Send Participation Inquiry';
+      setTimeout(() => { status.textContent = ''; status.className = 'form-status'; }, 5000);
+    })
+    .catch(() => {
+      status.textContent = 'Submission failed. Please try again.';
+      status.className = 'form-status error';
+      btn.disabled = false;
+      btn.textContent = 'Send Participation Inquiry';
+    });
+});
+</script>
+</body>
+</html>
