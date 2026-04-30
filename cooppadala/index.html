@@ -1,0 +1,1113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CoopPadala — The Co-operative Exchange</title>
+<link rel="icon" type="image/png" sizes="32x32" href="https://cdn.shopify.com/s/files/1/1304/2747/files/buyCoop____favicon.png?v=1702363958">
+<link rel="apple-touch-icon" href="https://cdn.shopify.com/s/files/1/1304/2747/files/buyCoop____favicon.png?v=1702363958">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#111827;
+  --ink2:#374151;
+  --muted:#6b7280;
+  --muted2:#9ca3af;
+  --line:#e5e7eb;
+  --line2:#f3f4f6;
+  --soft:#f9fafb;
+  --white:#fff;
+  --teal:#0f766e;
+  --teal-d:#0d6460;
+  --teal-p:#f0fdf4;
+  --teal-b:#86efac;
+  --amber:#d97706;
+  --amber-p:#fefce8;
+  --amber-b:#fde047;
+  --blue:#2563eb;
+  --red:#991b1b;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{min-height:100%;}
+body{
+  font-family:'Inter',sans-serif;background:var(--white);color:var(--ink);
+  font-size:14px;line-height:1.6;-webkit-font-smoothing:antialiased;
+}
+button,input,select,textarea{font-family:'Inter',sans-serif;}
+
+/* TOPBAR */
+.topbar{
+  height:52px;border-bottom:1px solid var(--line);padding:0 32px;
+  display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;background:rgba(255,255,255,.96);backdrop-filter:blur(8px);z-index:100;
+}
+.topbar-brand{font-size:15px;font-weight:700;color:var(--ink);text-decoration:none;display:flex;align-items:center;gap:8px;white-space:nowrap;}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(34,197,94,.35);}50%{box-shadow:0 0 0 5px rgba(34,197,94,0);}}
+.brand-mark{width:7px;height:7px;border-radius:50%;background:#22c55e;display:inline-block;animation:pulse 2s ease-in-out infinite;}
+.topbar-nav{display:flex;gap:20px;align-items:center;}
+.topbar-nav a{font-size:13px;color:var(--muted);text-decoration:none;white-space:nowrap;}
+.topbar-nav a:hover{color:var(--ink);}
+.topbar-nav a.active{color:var(--ink);font-weight:600;}
+
+/* PAGE SHELL */
+.shell{
+  display:grid;
+  grid-template-columns:minmax(0,58fr) 1px minmax(360px,42fr);
+  min-height:calc(100vh - 52px);
+}
+.divider{
+  width:100%;height:100%;background:var(--line);position:relative;z-index:20;
+  cursor:col-resize;touch-action:none;transition:background .14s,box-shadow .12s;
+}
+.divider::before{content:"";position:absolute;left:-10px;right:-10px;top:0;bottom:0;}
+.divider:hover{background:var(--teal-b);box-shadow:0 0 0 1px rgba(15,118,110,.08),0 0 12px rgba(15,118,110,.16);}
+.divider.pill-hover,.divider.dragging{background:var(--teal);box-shadow:0 0 0 1px rgba(15,118,110,.18),0 0 14px rgba(15,118,110,.26);}
+.div-pill{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  width:10px;height:36px;border:1px solid #d1d5db;border-radius:999px;background:var(--white);
+  box-shadow:0 1px 2px rgba(0,0,0,.06);cursor:grab;touch-action:none;z-index:2;
+  transition:border-color .10s,box-shadow .10s,background .10s;
+}
+.divider:hover .div-pill{border-color:var(--teal-b);box-shadow:0 0 0 1px rgba(15,118,110,.10),0 0 10px rgba(15,118,110,.16);}
+.divider.pill-hover .div-pill,.divider.dragging .div-pill,.div-pill.active{border-color:var(--teal);box-shadow:0 0 0 1px rgba(15,118,110,.22),0 0 14px rgba(15,118,110,.34);}
+.div-pill.active{cursor:grabbing;}
+.left-pane{min-width:0;overflow:hidden;}
+.right-pane{min-width:0;border-left:none;background:var(--white);}
+.left-scroll{height:calc(100vh - 52px);overflow-y:auto;scrollbar-width:none;}
+.left-scroll::-webkit-scrollbar{display:none;}
+.right-sticky{position:sticky;top:52px;height:calc(100vh - 52px);overflow-y:auto;scrollbar-width:none;}
+.right-sticky::-webkit-scrollbar{display:none;}
+
+/* HERO */
+.hero{padding:32px 34px 24px;border-bottom:1px solid var(--line);}
+.hero h1{font-size:34px;font-weight:700;line-height:1.08;letter-spacing:-.035em;margin-bottom:8px;}
+.hero-sub{max-width:760px;color:var(--muted);font-size:14px;line-height:1.75;margin-bottom:20px;}
+.tag-row{display:flex;gap:8px;flex-wrap:wrap;}
+.tag{
+  font-size:11px;font-weight:600;padding:4px 11px;border:1px solid var(--line);border-radius:999px;
+  color:var(--ink2);background:var(--soft);white-space:nowrap;text-decoration:none;
+  transition:border-color .15s,background .15s,color .15s;
+}
+.tag:hover{border-color:var(--teal-b);background:var(--teal-p);color:#166534;}
+.tag.signal{background:var(--teal-p);border-color:var(--teal-b);color:#166534;}
+.tag.amber{background:var(--amber-p);border-color:var(--amber-b);color:#854d0e;}
+.tag.amber:hover{border-color:#facc15;background:#fef9c3;color:#713f12;}
+
+/* LIVE ROUTE / STATS */
+.live-band{padding:20px 34px 24px;border-bottom:1px solid var(--line);}
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);border-radius:7px;overflow:hidden;margin-bottom:18px;}
+.stat{padding:14px 15px;border-right:1px solid var(--line);background:#fff;}
+.stat:last-child{border-right:none;}
+.stat-val{font-size:19px;font-weight:700;letter-spacing:-.02em;line-height:1.15;color:var(--ink);}
+.stat-label{font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted2);margin-top:4px;}
+.route-card{border:1px solid var(--line);border-radius:8px;background:linear-gradient(180deg,#fff,#fbfbfb);overflow:hidden;}
+.route-head{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border-bottom:1px solid var(--line);gap:12px;}
+.route-title{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted2);}
+.route-status{font-size:12px;font-weight:600;color:var(--teal);}
+.route-flow{display:grid;grid-template-columns:repeat(5,1fr);gap:0;padding:18px 14px 16px;position:relative;}
+.route-flow::before{content:"";position:absolute;left:9%;right:9%;top:42px;height:1px;background:var(--line);z-index:0;}
+.node{text-align:center;position:relative;z-index:1;min-width:0;}
+.node-dot{
+  width:32px;height:32px;margin:0 auto 7px;border-radius:50%;background:#fff;border:1px solid var(--line);
+  display:flex;align-items:center;justify-content:center;color:var(--muted2);font-size:13px;font-weight:700;
+  transition:all .16s ease;
+}
+.node.active .node-dot{background:var(--teal);border-color:var(--teal);color:#fff;box-shadow:0 0 0 5px rgba(15,118,110,.08);}
+.node-label{font-size:11px;font-weight:700;color:var(--ink2);line-height:1.25;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.node-sub{font-size:10px;color:var(--muted2);line-height:1.25;margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+
+/* LEFT CONTENT */
+.section{padding:28px 34px;border-bottom:1px solid var(--line);scroll-margin-top:68px;}
+.section-heading{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted2);margin-bottom:14px;}
+.prose{color:var(--ink2);line-height:1.8;max-width:780px;}
+.prose p+p{margin-top:10px;}
+.step-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:7px;overflow:hidden;}
+.step{background:#fff;padding:16px;}
+.step-num{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:var(--teal-p);border:1px solid var(--teal-b);color:#166534;font-size:11px;font-weight:700;margin-bottom:10px;}
+.step-title{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:4px;}
+.step p{font-size:12px;color:var(--muted);line-height:1.55;}
+
+.rate-tools{display:flex;gap:8px;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;}
+.origin-tabs{display:flex;gap:6px;flex-wrap:wrap;}
+.tab-btn{
+  border:1px solid var(--line);background:#fff;border-radius:5px;padding:7px 10px;
+  font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;
+}
+.tab-btn:hover{border-color:var(--muted2);color:var(--ink);}
+.tab-btn.active{border-color:var(--teal-b);background:var(--teal-p);color:#166534;}
+.table-wrap{
+  border:1px solid var(--line);
+  border-radius:8px;
+  overflow:hidden;
+  background:#fff;
+}
+table{
+  width:100%;
+  border-collapse:collapse;
+  table-layout:fixed;
+  min-width:0;
+}
+th,td{
+  padding:10px 10px;
+  border-bottom:1px solid var(--line2);
+  font-size:12px;
+}
+th{
+  background:var(--soft);
+  color:var(--muted);
+  font-size:10.5px;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  font-weight:700;
+  border-bottom:1px solid var(--line);
+  white-space:normal;
+  word-break:break-word;
+  overflow-wrap:anywhere;
+  line-height:1.35;
+  vertical-align:bottom;
+  text-align:center;
+}
+td{
+  text-align:center;
+  white-space:nowrap;
+}
+th:first-child,td:first-child{
+  position:static;
+  text-align:left;
+  background:#fff;
+  z-index:auto;
+  width:18%;
+}
+td:first-child{
+  font-weight:700;
+  color:var(--ink);
+}
+tr:last-child td{border-bottom:none;}
+tr.active-row td{background:var(--teal-p);}
+tr.active-row td:first-child{background:var(--teal-p);}
+td.rate-cell{cursor:pointer;transition:background .12s,color .12s;}
+td.rate-cell:hover{background:#ecfdf5;color:#065f46;}
+td.active-cell{background:#dcfce7!important;color:#064e3b;font-weight:800;box-shadow:inset 0 0 0 1px var(--teal-b);}
+.note-box{margin-top:12px;border:1px solid var(--line);border-radius:7px;padding:13px 14px;background:var(--soft);font-size:12.5px;color:var(--muted);line-height:1.65;}
+.note-box strong{color:var(--ink);}
+
+/* RIGHT TRANSACTION PANEL */
+.tx-panel{padding:22px 24px 28px;scroll-margin-top:68px;}
+.panel-eyebrow{font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--teal);display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.panel-eyebrow::before{content:"";width:14px;height:1px;background:var(--teal);}
+.panel-title{font-size:22px;font-weight:700;letter-spacing:-.03em;line-height:1.2;margin-bottom:4px;}
+.panel-sub{font-size:12.5px;color:var(--muted);line-height:1.6;margin-bottom:16px;}
+.calc-card{border:1px solid var(--line);border-radius:9px;overflow:hidden;background:#fff;margin-bottom:14px;}
+.calc-section{padding:14px;border-bottom:1px solid var(--line);}
+.calc-section:last-child{border-bottom:none;}
+.field-label{font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted2);margin-bottom:7px;display:block;}
+.select,input[type=text],input[type=number],input[type=datetime-local],textarea{
+  width:100%;border:1px solid #d1d5db;border-radius:5px;background:#fff;color:var(--ink);outline:none;
+  padding:10px 11px;font-size:13px;transition:border-color .15s,box-shadow .15s;
+}
+.select:focus,input:focus,textarea:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(15,118,110,.08);}
+textarea{min-height:70px;resize:vertical;}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.field{margin-bottom:9px;}
+.weight-line{display:grid;grid-template-columns:1fr 120px;gap:8px;align-items:end;}
+.service-pill{
+  padding:10px 11px;border:1px solid var(--teal-b);border-radius:5px;background:var(--teal-p);
+  color:#166534;font-size:12px;font-weight:700;text-align:center;min-height:41px;display:flex;align-items:center;justify-content:center;
+}
+.amount-card{
+  display:grid;grid-template-columns:1fr 164px;gap:14px;align-items:center;
+  padding:15px;border:1px solid var(--line);border-radius:9px;background:linear-gradient(180deg,#fff,#fbfbfb);margin-bottom:14px;
+}
+.amount-label{font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted2);margin-bottom:4px;}
+.amount{font-size:38px;font-weight:800;letter-spacing:-.05em;line-height:1;color:var(--ink);}
+.amount-note{font-size:11.5px;color:var(--muted);line-height:1.45;margin-top:6px;}
+.ref-line{font-size:11px;color:var(--muted2);margin-top:7px;word-break:break-all;}
+.ref-line strong{color:var(--ink2);}
+.pay-tabs{display:flex;gap:6px;margin-top:11px;flex-wrap:wrap;}
+.pay-tab{
+  border:1px solid var(--line);background:#fff;color:var(--muted);border-radius:999px;padding:6px 10px;
+  font-size:11.5px;font-weight:700;cursor:pointer;transition:border-color .15s,background .15s,color .15s;
+}
+.pay-tab:hover{border-color:var(--teal-b);background:var(--teal-p);color:#166534;}
+.pay-tab.active{border-color:var(--teal);background:var(--teal-p);color:#166534;}
+.qr-wrap{display:flex;align-items:center;justify-content:center;border:1px solid var(--line);border-radius:8px;padding:9px;background:#fff;min-height:164px;}
+.qr-wrap img{display:block;width:144px;height:144px;object-fit:contain;}
+.qr-caption{font-size:10.8px;color:var(--muted);text-align:center;line-height:1.35;margin-top:7px;}
+.submit-toggle{
+  width:100%;border:none;border-radius:6px;background:var(--teal);color:#fff;padding:12px 13px;font-size:13.5px;font-weight:700;cursor:pointer;
+  transition:background .15s,transform .08s;margin-bottom:10px;
+}
+.submit-toggle:hover{background:var(--teal-d);}
+.submit-toggle:active{transform:translateY(1px);}
+.intake-card{border:1px solid var(--line);border-radius:9px;background:#fff;overflow:hidden;}
+.intake-head{padding:13px 14px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:10px;align-items:center;}
+.intake-head-title{font-size:13px;font-weight:800;color:var(--ink);}
+.intake-head-sub{font-size:11px;color:var(--muted2);line-height:1.4;}
+.intake-body{padding:14px;}
+.hidden{display:none!important;}
+.hp-field{position:absolute!important;left:-9999px!important;width:1px!important;height:1px!important;opacity:0!important;pointer-events:none!important;}
+.primary-submit{
+  width:100%;padding:11px;background:var(--ink);color:#fff;border:none;border-radius:5px;
+  font-size:13.5px;font-weight:700;cursor:pointer;margin-top:3px;
+}
+.primary-submit:hover{background:var(--teal);}
+.form-status{margin-top:8px;font-size:12px;font-weight:600;color:var(--muted);text-align:center;min-height:18px;}
+.form-status.success{color:#166534;}
+.form-status.error{color:var(--red);}
+.small-help{font-size:11.5px;color:var(--muted2);line-height:1.45;margin-top:6px;}
+
+.cta-stack{padding:0 24px 24px;}
+.cta-label{font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted2);margin:2px 0 10px;}
+.map-cta{display:flex;align-items:center;gap:12px;padding:14px 16px;border:1px solid var(--line);border-radius:7px;text-decoration:none;margin-bottom:10px;transition:border-color .15s,background .15s;}
+.map-cta:hover{border-color:var(--teal);background:var(--teal-p);}
+.map-cta-icon{width:36px;height:36px;min-width:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
+.icon-exchange{background:var(--teal-p);border:1px solid var(--teal-b);color:var(--teal);}
+.icon-cooppay{background:var(--amber-p);border:1px solid var(--amber-b);color:#854d0e;}
+.icon-map{background:var(--teal-p);border:1px solid var(--teal-b);color:var(--teal);font-size:20px;font-weight:400;line-height:1;}
+.map-cta-text{flex:1;min-width:0;}
+.map-cta-label{font-size:12px;font-weight:800;color:var(--ink);line-height:1.35;}
+.map-cta-sub{font-size:10.8px;color:var(--muted);line-height:1.35;}
+.map-cta-arrow{font-size:13px;color:var(--teal);font-weight:700;}
+.map-cta-tagline{font-size:11px;color:var(--muted2);line-height:1.6;margin-top:-2px;margin-bottom:14px;padding:0 4px;}
+
+.footer{border-top:1px solid var(--line);padding:18px 34px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;}
+.footer-copy{font-size:12px;color:var(--muted2);}
+.footer-link{font-size:12px;color:var(--teal);font-weight:700;text-decoration:none;}
+
+@media(max-width:1080px){
+  .shell{grid-template-columns:minmax(0,54fr) 1px minmax(340px,46fr);}
+  .amount-card{grid-template-columns:1fr;}
+  .qr-wrap img{width:170px;height:170px;}
+}
+@media(max-width:900px){
+  .topbar{padding:0 16px;}
+  .topbar-nav{display:none;}
+  .shell{display:flex;flex-direction:column;min-height:auto;}
+  .divider{display:none;}
+  .left-scroll,.right-sticky{height:auto;overflow:visible;}
+  .right-pane{order:2;border-bottom:1px solid var(--line);}
+  .left-pane{order:1;}
+  .right-sticky{position:static;}
+  .hero{padding:24px 16px 18px;}
+  .hero h1{font-size:28px;}
+  .live-band{padding:16px;}
+  .tx-panel{padding:18px 16px 20px;}
+  .cta-stack{padding:0 16px 22px;}
+  .section{padding:24px 16px;}
+  .table-wrap{overflow:hidden;}
+  th,td{padding:8px 6px;font-size:11px;}
+  th{font-size:10px;line-height:1.25;}
+  th:first-child,td:first-child{width:22%;}
+  .stats-row{grid-template-columns:1fr 1fr;}
+  .stat:nth-child(2){border-right:none;}
+  .stat:nth-child(-n+2){border-bottom:1px solid var(--line);}
+  .route-flow{grid-template-columns:1fr;gap:10px;padding:14px;}
+  .route-flow::before{left:29px;right:auto;top:32px;bottom:32px;width:1px;height:auto;}
+  .node{display:grid;grid-template-columns:40px 1fr;text-align:left;align-items:center;}
+  .node-dot{margin:0;}
+  .node-label,.node-sub{white-space:normal;}
+  .step-grid{grid-template-columns:1fr 1fr;}
+  .field-row{grid-template-columns:1fr;}
+  .amount-card{grid-template-columns:1fr 170px;}
+}
+@media(max-width:560px){
+  .amount-card{grid-template-columns:1fr;}
+  .amount{font-size:34px;}
+  .weight-line{grid-template-columns:1fr;}
+  .step-grid{grid-template-columns:1fr;}
+  .qr-wrap{min-height:198px;}
+  .qr-wrap img{width:180px;height:180px;}
+  th,td{padding:7px 5px;font-size:10.5px;}
+  th{font-size:9.5px;}
+  th:first-child,td:first-child{width:24%;}
+}
+</style>
+</head>
+<body>
+
+<nav class="topbar">
+  <a href="https://buy.coop" class="topbar-brand"><span class="brand-mark"></span>The Co-operative Exchange</a>
+  <div class="topbar-nav">
+    <a href="https://buy.coop/collections/featured-suppliers">Supply Signals</a>
+    <a href="https://buy.coop/collections/koop-king-multipurpose-cooperative">Logistics</a>
+    <a href="https://map.buy.coop" class="active">Global Supply Map</a>
+    <a href="https://pay.buy.coop">CoopPay</a>
+  </div>
+</nav>
+
+<div class="shell">
+  <main class="left-pane" id="pL">
+    <div class="left-scroll" id="pLi">
+      <section class="hero" id="top">
+        <h1>CoopPadala</h1>
+        <p class="hero-sub">Select origin, destination, and weight to see the CoopPadala rate. Pay the displayed amount, then submit the padala and payment details for verification.</p>
+        <div class="tag-row">
+          <a href="#transaction" class="tag signal">Rate + Pay + Intake</a>
+          <a href="#transaction" class="tag">Origin and Destination Area Selector</a>
+          <a href="#rates" class="tag">Docs to Jumbo</a>
+          <a href="#transaction" class="tag amber">CoopPay Accepted</a>
+        </div>
+      </section>
+
+      <section class="live-band">
+        <div class="stats-row">
+          <div class="stat"><div class="stat-val">₱80+</div><div class="stat-label">Starting Rate</div></div>
+          <div class="stat"><div class="stat-val">0.5–6kg</div><div class="stat-label">Core Bands</div></div>
+          <div class="stat"><div class="stat-val">Jumbo</div><div class="stat-label">Above 6kg</div></div>
+          <div class="stat"><div class="stat-val">QR Pay</div><div class="stat-label">CoopPay / Lightning</div></div>
+        </div>
+
+        <div class="route-card">
+          <div class="route-head">
+            <div class="route-title">Live Transaction Route</div>
+            <div class="route-status" id="routeStatus">Ready to calculate</div>
+          </div>
+          <div class="route-flow">
+            <div class="node active" id="nodeOrigin"><div class="node-dot">1</div><div><div class="node-label">Origin</div><div class="node-sub" id="nodeOriginSub">Visayas</div></div></div>
+            <div class="node active" id="nodeDestination"><div class="node-dot">2</div><div><div class="node-label">Destination</div><div class="node-sub" id="nodeDestinationSub">Luzon / Metro Manila / Greater Manila Area</div></div></div>
+            <div class="node active" id="nodeWeight"><div class="node-dot">3</div><div><div class="node-label">Weight</div><div class="node-sub" id="nodeWeightSub">Small</div></div></div>
+            <div class="node active" id="nodeRate"><div class="node-dot">₱</div><div><div class="node-label">Rate</div><div class="node-sub" id="nodeRateSub">₱175</div></div></div>
+            <div class="node active" id="nodePay"><div class="node-dot">QR</div><div><div class="node-label">Pay</div><div class="node-sub" id="nodePaySub">CoopPay</div></div></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="how">
+        <div class="section-heading">How CoopPadala Works</div>
+        <div class="step-grid">
+          <div class="step"><div class="step-num">1</div><div class="step-title">Select route</div><p>Choose origin group and destination group. The user sees simple CoopPadala zones.</p></div>
+          <div class="step"><div class="step-num">2</div><div class="step-title">Enter weight</div><p>Weight maps automatically to Docs, Small, Medium, Large, or Jumbo.</p></div>
+          <div class="step"><div class="step-num">3</div><div class="step-title">Pay rate</div><p>The amount updates live. Scan the payment QR and manually enter the displayed amount.</p></div>
+          <div class="step"><div class="step-num">4</div><div class="step-title">Submit details</div><p>Input sender, recipient, item, and payment details so CoopPadala can verify and forward.</p></div>
+        </div>
+      </section>
+
+      <section class="section" id="rates">
+        <div class="section-heading">Detailed Rate Matrix</div>
+        <div class="rate-tools">
+          <div class="origin-tabs" id="originTabs"></div>
+          <div style="font-size:12px;color:var(--muted);">Tap any rate cell to load it into the calculator.</div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr id="rateHeadRow"></tr>
+            </thead>
+            <tbody id="rateTableBody"></tbody>
+          </table>
+        </div>
+        <div class="note-box" id="ratesNote">
+          <strong>Rate note:</strong> Displayed CoopPadala rates already include the required buffer for simplified zones and weight bands. Jumbo is Large Rate plus every extra kilogram or fraction above 6 kg.
+        </div>
+      </section>
+
+      <section class="section" id="coverage">
+        <div class="section-heading">Coverage Rules</div>
+        <div class="prose">
+          <p id="coverageLocalNote"><strong>Same City / Province as Origin</strong> means a local movement where the destination is in the same city or province as the origin.</p>
+          <p><strong>Special Area / Island</strong> covers Palawan, island destinations, or other special-area movements where special handling may apply.</p>
+          <p>Fragile, perishable, regulated, high-value, or unusual items should be cleared first before payment and forwarding.</p>
+        </div>
+      </section>
+
+      <div class="footer">
+        <span class="footer-copy">© <span id="footerYear"></span> The Co-operative Exchange</span>
+        <a class="footer-link" href="https://www.buy.coop">www.buy.coop</a>
+      </div>
+    </div>
+  </main>
+
+  <div class="divider" id="divider">
+    <button class="div-pill" id="divPill" type="button" aria-label="Resize panels or scroll directory"></button>
+  </div>
+
+  <aside class="right-pane" id="pR">
+    <div class="right-sticky">
+      <section class="tx-panel" id="transaction">
+        <div class="panel-eyebrow">Shipping Counter</div>
+        <div class="panel-title">Calculate, pay, submit.</div>
+        <p class="panel-sub">Select the route and weight. Pay the displayed amount by QR. Then submit the padala details and payment reference.</p>
+
+        <div class="calc-card">
+          <div class="calc-section">
+            <label class="field-label" for="originGroup">Origin area</label>
+            <select class="select" id="originGroup">
+              <option value="MM_GMA">Metro Manila / Greater Manila Area</option>
+              <option value="LUZON">Luzon</option>
+              <option value="VISAYAS" selected>Visayas</option>
+              <option value="MINDANAO">Mindanao</option>
+            </select>
+            <div class="small-help">Choose the broad area where the package starts. Specific city, branch, or drop-off point is entered below.</div>
+          </div>
+
+          <div class="calc-section">
+            <label class="field-label" for="destinationGroup">Destination area</label>
+            <select class="select" id="destinationGroup"></select>
+            <div class="small-help" id="destinationHelp">Choose the broad area where the package is going. Exact recipient city and address are entered below.</div>
+          </div>
+
+          <div class="calc-section">
+            <label class="field-label" for="actualWeightKg">Weight</label>
+            <div class="weight-line">
+              <input type="number" id="actualWeightKg" min="0.1" step="0.1" value="1" inputmode="decimal">
+              <div class="service-pill" id="servicePill">Small</div>
+            </div>
+            <div class="small-help" id="weightHelp">Over 0.5 kg to 1 kg · CoopPadala Small</div>
+          </div>
+        </div>
+
+        <div class="amount-card">
+          <div>
+            <div class="amount-label">Amount to Pay</div>
+            <div class="amount" id="amountDisplay">₱175</div>
+            <div class="amount-note" id="amountNote">Visayas → Luzon / Metro Manila / Greater Manila Area · CoopPadala Small</div>
+            <div class="ref-line"><strong>Client ref:</strong> <span id="clientRefDisplay"></span></div>
+            <div class="pay-tabs">
+              <button type="button" class="pay-tab active" data-method="CoopPay" data-qr="https://cdn.shopify.com/s/files/1/1304/2747/files/qrcode_CoopPay.png?v=1773152216">CoopPay</button>
+              <button type="button" class="pay-tab" data-method="Other Lightning Wallet" data-qr="https://cdn.shopify.com/s/files/1/1304/2747/files/qrcode_Coinos.png?v=1773152216">Other Lightning wallet</button>
+            </div>
+          </div>
+          <div>
+            <div class="qr-wrap"><img id="paymentQr" src="https://cdn.shopify.com/s/files/1/1304/2747/files/qrcode_CoopPay.png?v=1773152216" alt="CoopPadala payment QR"></div>
+            <div class="qr-caption" id="qrCaption">Scan with CoopPay and enter the displayed amount.</div>
+          </div>
+        </div>
+
+        <button type="button" class="submit-toggle" onclick="document.getElementById('sender_name').focus();">Enter Padala Details</button>
+
+        <div class="intake-card">
+          <div class="intake-head">
+            <div>
+              <div class="intake-head-title">Padala + Payment Details</div>
+              <div class="intake-head-sub">Submit after payment. CoopPadala will verify before forwarding.</div>
+            </div>
+          </div>
+          <div class="intake-body">
+            <form id="coopPadalaForm">
+              <input type="text" name="website" class="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+              <input type="hidden" name="form_id" value="cooppadala_transaction">
+              <input type="hidden" name="form_version" value="1.0">
+              <input type="hidden" name="page_url" id="page_url">
+              <input type="hidden" name="referrer" id="referrer">
+              <input type="hidden" name="submitted_at_client" id="submitted_at_client">
+              <input type="hidden" name="user_agent" id="user_agent">
+              <input type="hidden" name="service_name" value="CoopPadala">
+
+              <input type="hidden" name="origin_group" id="h_origin_group">
+              <input type="hidden" name="origin_label" id="h_origin_label">
+              <input type="hidden" name="destination_group" id="h_destination_group">
+              <input type="hidden" name="destination_label" id="h_destination_label">
+              <input type="hidden" name="service_band" id="h_service_band">
+              <input type="hidden" name="weight_class_label" id="h_weight_class_label">
+              <input type="hidden" name="actual_weight_kg" id="h_actual_weight_kg">
+              <input type="hidden" name="chargeable_extra_kg" id="h_chargeable_extra_kg">
+              <input type="hidden" name="base_rate" id="h_base_rate">
+              <input type="hidden" name="additional_kg_rate" id="h_additional_kg_rate">
+              <input type="hidden" name="calculated_rate" id="h_calculated_rate">
+              <input type="hidden" name="payment_method" id="h_payment_method" value="CoopPay">
+              <input type="hidden" name="payment_amount" id="h_payment_amount">
+              <input type="hidden" name="payment_status" value="submitted_for_verification">
+              <input type="hidden" name="payment_qr" id="h_payment_qr" value="https://cdn.shopify.com/s/files/1/1304/2747/files/qrcode_CoopPay.png?v=1773152216">
+              <input type="hidden" name="client_reference" id="h_client_reference">
+
+              <div class="field-row">
+                <div class="field"><input type="text" name="sender_name" id="sender_name" placeholder="Sender name" required></div>
+                <div class="field"><input type="text" name="sender_contact" placeholder="Sender mobile" required></div>
+              </div>
+
+              <div class="field-row">
+                <div class="field"><input type="text" name="origin_detail" placeholder="Specific origin / drop-off point"></div>
+                <div class="field"><input type="text" name="destination_detail" placeholder="City / province destination" required></div>
+              </div>
+
+              <div class="field-row">
+                <div class="field"><input type="text" name="recipient_name" placeholder="Recipient name" required></div>
+                <div class="field"><input type="text" name="recipient_contact" placeholder="Recipient mobile" required></div>
+              </div>
+
+              <div class="field"><input type="text" name="recipient_address" placeholder="Recipient address / delivery notes" required></div>
+              <div class="field"><input type="text" name="item_description" placeholder="Item description e.g. documents, supplies, pasalubong" required></div>
+
+              <div class="field-row">
+                <div class="field"><input type="text" name="declared_value" placeholder="Declared value, if any"></div>
+                <div class="field"><input type="text" name="payment_reference" placeholder="Payment reference / tx id" required></div>
+              </div>
+
+              <div class="field"><input type="text" name="payment_time" id="payment_time" placeholder="Payment date/time"></div>
+              <div class="field"><textarea name="special_instructions" placeholder="Special instructions"></textarea></div>
+
+              <button type="submit" class="primary-submit" id="submitBtn">Submit CoopPadala Transaction</button>
+              <div id="formStatus" class="form-status"></div>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <div class="cta-stack">
+        <div class="cta-label">Also on the Exchange</div>
+
+        <a href="https://www.buy.coop" class="map-cta">
+          <div class="map-cta-icon icon-exchange">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 014-4h14"/>
+              <polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 01-4 4H3"/>
+            </svg>
+          </div>
+          <div class="map-cta-text">
+            <div class="map-cta-label">The Co-operative Exchange</div>
+            <div class="map-cta-sub">Infrastructure for the Cooperative Economy · buy.coop</div>
+          </div>
+          <div class="map-cta-arrow">→</div>
+        </a>
+
+        <a href="https://pay.buy.coop" class="map-cta">
+          <div class="map-cta-icon icon-cooppay">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+            </svg>
+          </div>
+          <div class="map-cta-text">
+            <div class="map-cta-label">CoopPay — The Payment Rail for Cooperative Commerce</div>
+            <div class="map-cta-sub">pay.buy.coop</div>
+          </div>
+          <div class="map-cta-arrow">→</div>
+        </a>
+        <div class="map-cta-tagline">The world's first Lightning Network super app built by and for cooperatives</div>
+
+        <a href="https://map.buy.coop" class="map-cta">
+          <div class="map-cta-icon icon-map">+</div>
+          <div class="map-cta-text">
+            <div class="map-cta-label">Add your cooperative to the global supply map</div>
+            <div class="map-cta-sub">map.buy.coop</div>
+          </div>
+          <div class="map-cta-arrow">→</div>
+        </a>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<script>
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz2CmLrWKBePpWA1xV1LD86q4YYUXWkpqVCe-bNJyLW986949MpmyA-QzpQYm4lVvXk/exec";
+const COOPPAY_QR = "https://cdn.shopify.com/s/files/1/1304/2747/files/qrcode_CoopPay.png?v=1773152216";
+const LIGHTNING_QR = "https://cdn.shopify.com/s/files/1/1304/2747/files/qrcode_Coinos.png?v=1773152216";
+
+const LABELS = {
+  ORIGIN: {
+    MM_GMA:"Metro Manila / Greater Manila Area",
+    LUZON:"Luzon",
+    VISAYAS:"Visayas",
+    MINDANAO:"Mindanao"
+  },
+  DEST: {
+    WITHIN_CITY_PROVINCE:"Same City / Province as Origin",
+    LUZON_MM_GMA:"Luzon / Metro Manila / Greater Manila Area",
+    VISAYAS:"Visayas",
+    MINDANAO:"Mindanao",
+    ISLAND_SPECIAL:"Special Area / Island"
+  },
+  SERVICE: {
+    COOPPADALA_DOCS:"CoopPadala Docs",
+    COOPPADALA_SMALL:"CoopPadala Small",
+    COOPPADALA_MEDIUM:"CoopPadala Medium",
+    COOPPADALA_LARGE:"CoopPadala Large",
+    COOPPADALA_JUMBO:"CoopPadala Jumbo"
+  }
+};
+
+const TABLE_LABELS = {
+  ORIGIN: {
+    MM_GMA:"Metro Manila Area",
+    LUZON:"Luzon",
+    VISAYAS:"Visayas",
+    MINDANAO:"Mindanao"
+  },
+  DEST: {
+    WITHIN_CITY_PROVINCE:"Same City / Province",
+    LUZON_MM_GMA:"Luzon / Metro Manila",
+    VISAYAS:"Visayas",
+    MINDANAO:"Mindanao",
+    ISLAND_SPECIAL:"Special Area / Island"
+  }
+};
+
+const RATE_MATRIX = {
+  MM_GMA: {
+    COOPPADALA_DOCS:   {WITHIN_CITY_PROVINCE:90, LUZON_MM_GMA:90, VISAYAS:115, MINDANAO:125, ISLAND_SPECIAL:125},
+    COOPPADALA_SMALL:  {WITHIN_CITY_PROVINCE:100, LUZON_MM_GMA:155, VISAYAS:170, MINDANAO:185, ISLAND_SPECIAL:195},
+    COOPPADALA_MEDIUM: {WITHIN_CITY_PROVINCE:145, LUZON_MM_GMA:180, VISAYAS:190, MINDANAO:210, ISLAND_SPECIAL:220},
+    COOPPADALA_LARGE:  {WITHIN_CITY_PROVINCE:245, LUZON_MM_GMA:400, VISAYAS:450, MINDANAO:500, ISLAND_SPECIAL:500},
+    COOPPADALA_JUMBO:  {WITHIN_CITY_PROVINCE:40, LUZON_MM_GMA:60, VISAYAS:65, MINDANAO:70, ISLAND_SPECIAL:70}
+  },
+  LUZON: {
+    COOPPADALA_DOCS:   {WITHIN_CITY_PROVINCE:80, LUZON_MM_GMA:90, VISAYAS:100, MINDANAO:110, ISLAND_SPECIAL:125},
+    COOPPADALA_SMALL:  {WITHIN_CITY_PROVINCE:145, LUZON_MM_GMA:150, VISAYAS:170, MINDANAO:185, ISLAND_SPECIAL:195},
+    COOPPADALA_MEDIUM: {WITHIN_CITY_PROVINCE:170, LUZON_MM_GMA:180, VISAYAS:190, MINDANAO:210, ISLAND_SPECIAL:220},
+    COOPPADALA_LARGE:  {WITHIN_CITY_PROVINCE:265, LUZON_MM_GMA:400, VISAYAS:450, MINDANAO:500, ISLAND_SPECIAL:500},
+    COOPPADALA_JUMBO:  {WITHIN_CITY_PROVINCE:60, LUZON_MM_GMA:60, VISAYAS:70, MINDANAO:70, ISLAND_SPECIAL:70}
+  },
+  VISAYAS: {
+    COOPPADALA_DOCS:   {WITHIN_CITY_PROVINCE:85, LUZON_MM_GMA:100, VISAYAS:85, MINDANAO:110, ISLAND_SPECIAL:125},
+    COOPPADALA_SMALL:  {WITHIN_CITY_PROVINCE:150, LUZON_MM_GMA:175, VISAYAS:150, MINDANAO:170, ISLAND_SPECIAL:185},
+    COOPPADALA_MEDIUM: {WITHIN_CITY_PROVINCE:175, LUZON_MM_GMA:195, VISAYAS:175, MINDANAO:195, ISLAND_SPECIAL:205},
+    COOPPADALA_LARGE:  {WITHIN_CITY_PROVINCE:425, LUZON_MM_GMA:450, VISAYAS:425, MINDANAO:500, ISLAND_SPECIAL:500},
+    COOPPADALA_JUMBO:  {WITHIN_CITY_PROVINCE:70, LUZON_MM_GMA:70, VISAYAS:70, MINDANAO:70, ISLAND_SPECIAL:70}
+  },
+  MINDANAO: {
+    COOPPADALA_DOCS:   {WITHIN_CITY_PROVINCE:85, LUZON_MM_GMA:105, VISAYAS:110, MINDANAO:85, ISLAND_SPECIAL:125},
+    COOPPADALA_SMALL:  {WITHIN_CITY_PROVINCE:150, LUZON_MM_GMA:190, VISAYAS:170, MINDANAO:150, ISLAND_SPECIAL:185},
+    COOPPADALA_MEDIUM: {WITHIN_CITY_PROVINCE:175, LUZON_MM_GMA:210, VISAYAS:190, MINDANAO:175, ISLAND_SPECIAL:205},
+    COOPPADALA_LARGE:  {WITHIN_CITY_PROVINCE:425, LUZON_MM_GMA:450, VISAYAS:500, MINDANAO:425, ISLAND_SPECIAL:500},
+    COOPPADALA_JUMBO:  {WITHIN_CITY_PROVINCE:70, LUZON_MM_GMA:70, VISAYAS:70, MINDANAO:70, ISLAND_SPECIAL:70}
+  }
+};
+
+const SERVICE_ROWS = [
+  "COOPPADALA_DOCS",
+  "COOPPADALA_SMALL",
+  "COOPPADALA_MEDIUM",
+  "COOPPADALA_LARGE",
+  "COOPPADALA_JUMBO"
+];
+const DEST_OPTIONS_BY_ORIGIN = {
+  MM_GMA: [
+    "WITHIN_CITY_PROVINCE",
+    "LUZON_MM_GMA",
+    "VISAYAS",
+    "MINDANAO",
+    "ISLAND_SPECIAL"
+  ],
+  LUZON: [
+    "WITHIN_CITY_PROVINCE",
+    "LUZON_MM_GMA",
+    "VISAYAS",
+    "MINDANAO",
+    "ISLAND_SPECIAL"
+  ],
+  VISAYAS: [
+    "LUZON_MM_GMA",
+    "VISAYAS",
+    "MINDANAO",
+    "ISLAND_SPECIAL"
+  ],
+  MINDANAO: [
+    "LUZON_MM_GMA",
+    "VISAYAS",
+    "MINDANAO",
+    "ISLAND_SPECIAL"
+  ]
+};
+const SERVICE_WEIGHT = {
+  COOPPADALA_DOCS:0.5,
+  COOPPADALA_SMALL:1,
+  COOPPADALA_MEDIUM:3,
+  COOPPADALA_LARGE:6,
+  COOPPADALA_JUMBO:7
+};
+
+function getDestinationOptions(origin){
+  return DEST_OPTIONS_BY_ORIGIN[origin] || [];
+}
+
+function getDefaultDestination(origin){
+  if(origin === "VISAYAS") return "VISAYAS";
+  if(origin === "MINDANAO") return "MINDANAO";
+  return "LUZON_MM_GMA";
+}
+
+function updateDestinationHelp(origin){
+  const help = document.getElementById("destinationHelp");
+  if(!help) return;
+
+  if(origin === "VISAYAS"){
+    help.textContent = "For Visayas origin, local and Visayas-wide movements currently use the same rate, so only one Visayas option is shown.";
+    return;
+  }
+
+  if(origin === "MINDANAO"){
+    help.textContent = "For Mindanao origin, local and Mindanao-wide movements currently use the same rate, so only one Mindanao option is shown.";
+    return;
+  }
+
+  help.textContent = "Choose the broad area where the package is going. Exact recipient city and address are entered below.";
+}
+
+function populateDestinationOptions(preserveCurrent = true){
+  const origin = val("originGroup");
+  const select = document.getElementById("destinationGroup");
+  const options = getDestinationOptions(origin);
+  const current = preserveCurrent ? select.value : "";
+  const nextValue = options.includes(current) ? current : getDefaultDestination(origin);
+
+  select.innerHTML = options.map(key => `<option value="${key}">${LABELS.DEST[key]}</option>`).join("");
+  select.value = nextValue;
+  updateDestinationHelp(origin);
+}
+
+function updateRatesNote(origin){
+  const note = document.getElementById("ratesNote");
+  if(!note) return;
+
+  if(origin === "VISAYAS"){
+    note.innerHTML = `<strong>Rate note:</strong> For Visayas origin, local shipments and Visayas-to-Visayas shipments currently use the same rate, so only one Visayas destination option is shown. Jumbo is Large Rate plus every extra kilogram or fraction above 6 kg.`;
+    return;
+  }
+
+  if(origin === "MINDANAO"){
+    note.innerHTML = `<strong>Rate note:</strong> For Mindanao origin, local shipments and Mindanao-to-Mindanao shipments currently use the same rate, so only one Mindanao destination option is shown. Jumbo is Large Rate plus every extra kilogram or fraction above 6 kg.`;
+    return;
+  }
+
+  note.innerHTML = `<strong>Rate note:</strong> Displayed CoopPadala rates already include the required buffer for simplified zones and weight bands. Jumbo is Large Rate plus every extra kilogram or fraction above 6 kg.`;
+}
+
+function updateCoverageLocalNote(origin){
+  const note = document.getElementById("coverageLocalNote");
+  if(!note) return;
+
+  if(origin === "VISAYAS"){
+    note.innerHTML = `<strong>Visayas destination option</strong> covers both local shipments within the same city/province and broader Visayas-to-Visayas movements, because they currently use the same rate.`;
+    return;
+  }
+
+  if(origin === "MINDANAO"){
+    note.innerHTML = `<strong>Mindanao destination option</strong> covers both local shipments within the same city/province and broader Mindanao-to-Mindanao movements, because they currently use the same rate.`;
+    return;
+  }
+
+  note.innerHTML = `<strong>Same City / Province as Origin</strong> means a local movement where the destination is in the same city or province as the origin.`;
+}
+
+let clientRef = makeClientRef();
+let currentPaymentMethod = 'CoopPay';
+let currentPaymentQr = COOPPAY_QR;
+
+document.getElementById('footerYear').textContent = new Date().getFullYear();
+document.getElementById('clientRefDisplay').textContent = clientRef;
+
+function money(n){return "₱" + Number(n || 0).toLocaleString('en-PH');}
+function val(id){return document.getElementById(id).value;}
+function set(id,value){document.getElementById(id).textContent=value;}
+function setValue(id,value){const el=document.getElementById(id); if(el) el.value=value == null ? "" : value;}
+
+function makeClientRef(){
+  const d = new Date();
+  const pad = n => String(n).padStart(2,'0');
+  const stamp = d.getFullYear()+pad(d.getMonth()+1)+pad(d.getDate())+'-'+pad(d.getHours())+pad(d.getMinutes())+pad(d.getSeconds());
+  const rand = Math.random().toString(36).slice(2,7).toUpperCase();
+  return 'CPD-' + stamp + '-' + rand;
+}
+
+function serviceFromWeight(weight){
+  const w = Number(weight || 0);
+  if(w <= 0.5) return "COOPPADALA_DOCS";
+  if(w <= 1) return "COOPPADALA_SMALL";
+  if(w <= 3) return "COOPPADALA_MEDIUM";
+  if(w <= 6) return "COOPPADALA_LARGE";
+  return "COOPPADALA_JUMBO";
+}
+
+function serviceHelp(service, weight){
+  const map = {
+    COOPPADALA_DOCS:"Up to 0.5 kg · CoopPadala Docs",
+    COOPPADALA_SMALL:"Over 0.5 kg to 1 kg · CoopPadala Small",
+    COOPPADALA_MEDIUM:"Over 1 kg to 3 kg · CoopPadala Medium",
+    COOPPADALA_LARGE:"Over 3 kg to 6 kg · CoopPadala Large",
+    COOPPADALA_JUMBO:"Above 6 kg · CoopPadala Jumbo"
+  };
+  if(service !== "COOPPADALA_JUMBO") return map[service];
+  const extra = Math.max(0, Math.ceil(Number(weight || 0) - 6));
+  return map[service] + " · chargeable extra kg: " + extra;
+}
+
+function calculate(){
+  const origin = val('originGroup');
+  const dest = val('destinationGroup');
+  let weight = Number(val('actualWeightKg'));
+  if(!Number.isFinite(weight) || weight <= 0){ weight = 0.1; }
+
+  const service = serviceFromWeight(weight);
+  const serviceLabel = LABELS.SERVICE[service];
+  const originLabel = LABELS.ORIGIN[origin];
+  const destLabel = LABELS.DEST[dest];
+
+  let baseRate, addKgRate = 0, chargeableExtraKg = 0, calculatedRate;
+
+  if(service === "COOPPADALA_JUMBO"){
+    baseRate = RATE_MATRIX[origin].COOPPADALA_LARGE[dest];
+    addKgRate = RATE_MATRIX[origin].COOPPADALA_JUMBO[dest];
+    chargeableExtraKg = Math.max(0, Math.ceil(weight - 6));
+    calculatedRate = baseRate + (chargeableExtraKg * addKgRate);
+  } else {
+    baseRate = RATE_MATRIX[origin][service][dest];
+    calculatedRate = baseRate;
+  }
+
+  const amountText = money(calculatedRate);
+
+  set('amountDisplay', amountText);
+  set('amountNote', originLabel + ' → ' + destLabel + ' · ' + serviceLabel);
+  set('servicePill', serviceLabel.replace('CoopPadala ', ''));
+  set('weightHelp', serviceHelp(service, weight));
+  set('routeStatus', 'Calculated ' + amountText);
+  set('nodeOriginSub', originLabel);
+  set('nodeDestinationSub', destLabel);
+  set('nodeWeightSub', serviceLabel.replace('CoopPadala ', '') + ' · ' + weight + ' kg');
+  set('nodeRateSub', amountText);
+  set('nodePaySub', currentPaymentMethod === 'CoopPay' ? 'CoopPay' : 'Lightning');
+
+  setValue('h_origin_group', origin);
+  setValue('h_origin_label', originLabel);
+  setValue('h_destination_group', dest);
+  setValue('h_destination_label', destLabel);
+  setValue('h_service_band', service);
+  setValue('h_weight_class_label', serviceLabel);
+  setValue('h_actual_weight_kg', weight);
+  setValue('h_chargeable_extra_kg', chargeableExtraKg);
+  setValue('h_base_rate', baseRate);
+  setValue('h_additional_kg_rate', addKgRate);
+  setValue('h_calculated_rate', calculatedRate);
+  setValue('h_payment_amount', calculatedRate);
+  setValue('h_payment_method', currentPaymentMethod);
+  setValue('h_payment_qr', currentPaymentQr);
+  setValue('h_client_reference', clientRef);
+
+  renderRateTable(origin, service, dest);
+  updateCoverageLocalNote(origin);
+}
+
+function renderOriginTabs(){
+  const tabs = document.getElementById('originTabs');
+  tabs.innerHTML = Object.keys(LABELS.ORIGIN).map(key => `<button type="button" class="tab-btn" data-origin="${key}">${TABLE_LABELS.ORIGIN[key]}</button>`).join('');
+  tabs.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.getElementById('originGroup').value = btn.dataset.origin;
+      populateDestinationOptions(true);
+      calculate();
+    });
+  });
+}
+
+function renderRateTable(origin, activeService, activeDest){
+  const destKeys = getDestinationOptions(origin);
+
+  const headRow = document.getElementById('rateHeadRow');
+  headRow.innerHTML = [
+    '<th>Service</th>',
+    ...destKeys.map(dest => `<th>${TABLE_LABELS.DEST[dest]}</th>`)
+  ].join('');
+
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.origin === origin);
+  });
+
+  const body = document.getElementById('rateTableBody');
+  body.innerHTML = SERVICE_ROWS.map(service => {
+    const cells = destKeys.map(dest => {
+      const v = RATE_MATRIX[origin][service][dest];
+      const isActive = service === activeService && dest === activeDest;
+      const label = service === 'COOPPADALA_JUMBO' ? '+' + money(v) + '/kg' : money(v);
+      return `<td class="rate-cell ${isActive ? 'active-cell' : ''}" data-origin="${origin}" data-service="${service}" data-dest="${dest}" title="Load ${LABELS.SERVICE[service]} to ${LABELS.DEST[dest]}">${label}</td>`;
+    }).join('');
+
+    return `<tr class="${service === activeService ? 'active-row' : ''}"><td>${LABELS.SERVICE[service]}</td>${cells}</tr>`;
+  }).join('');
+
+  body.querySelectorAll('.rate-cell').forEach(cell => {
+    cell.addEventListener('click', () => {
+      document.getElementById('originGroup').value = cell.dataset.origin;
+      populateDestinationOptions(false);
+      document.getElementById('destinationGroup').value = cell.dataset.dest;
+      document.getElementById('actualWeightKg').value = SERVICE_WEIGHT[cell.dataset.service];
+      calculate();
+      document.getElementById('transaction').scrollIntoView({behavior:'smooth', block:'start'});
+    });
+  });
+
+  updateRatesNote(origin);
+}
+
+function fillMeta(){
+  setValue('page_url', window.location.href);
+  setValue('referrer', document.referrer || '');
+  setValue('submitted_at_client', new Date().toISOString());
+  setValue('user_agent', navigator.userAgent || '');
+}
+
+document.getElementById('originGroup').addEventListener('change', () => {
+  populateDestinationOptions(true);
+  calculate();
+});
+
+document.getElementById('destinationGroup').addEventListener('change', calculate);
+document.getElementById('actualWeightKg').addEventListener('input', calculate);
+document.getElementById('actualWeightKg').addEventListener('change', calculate);
+
+document.querySelectorAll('.pay-tab').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.pay-tab').forEach(x => x.classList.remove('active'));
+    btn.classList.add('active');
+    currentPaymentMethod = btn.dataset.method;
+    currentPaymentQr = btn.dataset.qr;
+    document.getElementById('paymentQr').src = currentPaymentQr;
+    document.getElementById('paymentQr').alt = currentPaymentMethod + ' payment QR';
+    document.getElementById('qrCaption').textContent = currentPaymentMethod === 'CoopPay'
+      ? 'Scan with CoopPay and enter the displayed amount.'
+      : 'Scan with a Lightning wallet and enter the displayed amount.';
+    calculate();
+  });
+});
+
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const target = document.getElementById(a.getAttribute('href').slice(1));
+    if(target){e.preventDefault();target.scrollIntoView({behavior:'smooth',block:'start'});}
+  });
+});
+
+renderOriginTabs();
+populateDestinationOptions(false);
+fillMeta();
+calculate();
+
+function localPaymentStamp(){
+  const d = new Date();
+  const pad = n => String(n).padStart(2,'0');
+  return d.getFullYear() + '-' + pad(d.getMonth()+1) + '-' + pad(d.getDate()) + ' ' + pad(d.getHours()) + ':' + pad(d.getMinutes());
+}
+const paymentTime = document.getElementById('payment_time');
+if(paymentTime) paymentTime.value = localPaymentStamp();
+
+document.getElementById('coopPadalaForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  const form = e.target;
+  const btn = document.getElementById('submitBtn');
+  const status = document.getElementById('formStatus');
+  if(btn.disabled) return;
+
+  fillMeta();
+  calculate();
+
+  btn.disabled = true;
+  btn.textContent = 'Submitting...';
+  status.textContent = '';
+  status.className = 'form-status';
+
+  fetch(SCRIPT_URL, {
+    method:'POST',
+    body:new FormData(form),
+    mode:'no-cors'
+  }).then(() => {
+    status.textContent = 'Transaction submitted. CoopPadala will verify payment and follow up.';
+    status.className = 'form-status success';
+    form.reset();
+    clientRef = makeClientRef();
+    document.getElementById('clientRefDisplay').textContent = clientRef;
+    fillMeta();
+    document.getElementById('payment_time').value = localPaymentStamp();
+    calculate();
+    btn.disabled = false;
+    btn.textContent = 'Submit CoopPadala Transaction';
+    setTimeout(() => { status.textContent = ''; status.className = 'form-status'; }, 6000);
+  }).catch(() => {
+    status.textContent = 'Submission failed. Please try again.';
+    status.className = 'form-status error';
+    btn.disabled = false;
+    btn.textContent = 'Submit CoopPadala Transaction';
+  });
+});
+
+// Divider controller: divider line resizes left/right; pill resizes and scrolls the left pane.
+(function(){
+  const row=document.querySelector('.shell');
+  const div=document.getElementById('divider');
+  const pill=document.getElementById('divPill');
+  const pL=document.getElementById('pL');
+  const pLi=document.getElementById('pLi');
+  if(!row||!div||!pill||!pL||!pLi)return;
+
+  const DIVW=1;
+  const MIN_LEFT=320;
+  const MIN_RIGHT=340;
+  const TRACK_GAP=18;
+  let active=false, mode='resize', sx=0, sy=0, startLeft=0, startScroll=0, startPillY=0, pointerId=null;
+
+  function clamp(v,min,max){return Math.max(min,Math.min(max,v));}
+  function trackBounds(){
+    const pillH=pill.offsetHeight||36;
+    const minY=pillH/2+TRACK_GAP;
+    const maxY=Math.max(minY,div.clientHeight-TRACK_GAP-pillH/2);
+    return {minY,maxY};
+  }
+  function centerPill(){
+    const b=trackBounds();
+    pill.style.top=((b.minY+b.maxY)/2)+'px';
+  }
+  function currentPillY(){
+    const raw=parseFloat(pill.style.top);
+    if(Number.isFinite(raw))return raw;
+    const b=trackBounds();
+    return (b.minY+b.maxY)/2;
+  }
+  function setPillY(y){
+    const b=trackBounds();
+    pill.style.top=clamp(y,b.minY,b.maxY)+'px';
+  }
+  function setGrid(leftPx){
+    const total=row.clientWidth;
+    const maxLeft=Math.max(MIN_LEFT,total-MIN_RIGHT-DIVW);
+    const left=clamp(leftPx,MIN_LEFT,maxLeft);
+    const right=Math.max(MIN_RIGHT,total-left-DIVW);
+    row.style.gridTemplateColumns=left+'px '+DIVW+'px '+right+'px';
+  }
+  function begin(e,forcedMode){
+    if(window.matchMedia('(max-width: 900px)').matches)return;
+    active=true;mode=forcedMode;pointerId=e.pointerId;
+    sx=e.clientX;sy=e.clientY;startLeft=pL.offsetWidth;startScroll=pLi.scrollTop;startPillY=currentPillY();
+    if(e.target===pill){pill.classList.add('active');div.classList.add('pill-hover');}
+    div.classList.add('dragging');
+    try{div.setPointerCapture(pointerId);}catch(err){}
+    document.body.style.userSelect='none';
+    document.body.style.cursor=mode==='both'?'grabbing':'col-resize';
+    e.preventDefault();
+  }
+  function move(e){
+    if(!active)return;
+    const dx=e.clientX-sx;
+    const dy=e.clientY-sy;
+    if(mode==='resize'){
+      setGrid(startLeft+dx);
+      return;
+    }
+    setGrid(startLeft+dx);
+    const b=trackBounds();
+    const track=Math.max(1,b.maxY-b.minY);
+    const scrollable=Math.max(0,pLi.scrollHeight-pLi.clientHeight);
+    const nextPillY=clamp(startPillY+dy,b.minY,b.maxY);
+    setPillY(nextPillY);
+    pLi.scrollTop=clamp(startScroll+((dy/track)*scrollable),0,scrollable);
+  }
+  function end(){
+    if(!active)return;
+    active=false;mode='resize';
+    pill.classList.remove('active');div.classList.remove('dragging');div.classList.remove('pill-hover');
+    document.body.style.userSelect='';document.body.style.cursor='';
+    if(pointerId!==null){try{div.releasePointerCapture(pointerId);}catch(err){}}
+    pointerId=null;
+  }
+
+  pill.addEventListener('pointerenter',()=>div.classList.add('pill-hover'));
+  pill.addEventListener('pointerleave',()=>{if(!active)div.classList.remove('pill-hover');});
+  pill.addEventListener('pointerdown',e=>begin(e,'both'));
+  div.addEventListener('pointerdown',e=>{if(e.target===pill)return;begin(e,'resize');});
+  div.addEventListener('pointermove',move);
+  div.addEventListener('pointerup',end);
+  div.addEventListener('pointercancel',end);
+  div.addEventListener('wheel',e=>{e.preventDefault();pLi.scrollTop+=e.deltaY;},{passive:false});
+  window.addEventListener('resize',centerPill);
+  requestAnimationFrame(centerPill);
+})();
+</script>
+</body>
+</html>
