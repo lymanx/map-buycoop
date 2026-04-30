@@ -340,7 +340,7 @@ textarea{min-height:70px;resize:vertical;}
     <div class="left-scroll" id="pLi">
       <section class="hero" id="top">
         <h1>CoopPadala</h1>
-        <p class="hero-sub">Select origin, destination, and weight to see the CoopPadala rate. Pay the displayed amount, then submit the padala and payment details for verification.</p>
+        <p class="hero-sub">Select origin, destination, and weight to see the CoopPadala rate. The default starts at the lowest current rate. Pay the displayed amount, then submit the padala and payment details for verification.</p>
         <div class="tag-row">
           <a href="#transaction" class="tag signal">Rate + Pay + Intake</a>
           <a href="#transaction" class="tag">Origin and Destination Area Selector</a>
@@ -363,10 +363,10 @@ textarea{min-height:70px;resize:vertical;}
             <div class="route-status" id="routeStatus">Ready to calculate</div>
           </div>
           <div class="route-flow">
-            <div class="node active" id="nodeOrigin"><div class="node-dot">1</div><div><div class="node-label">Origin</div><div class="node-sub" id="nodeOriginSub">Visayas</div></div></div>
-            <div class="node active" id="nodeDestination"><div class="node-dot">2</div><div><div class="node-label">Destination</div><div class="node-sub" id="nodeDestinationSub">Luzon / Metro Manila / Greater Manila Area</div></div></div>
-            <div class="node active" id="nodeWeight"><div class="node-dot">3</div><div><div class="node-label">Weight</div><div class="node-sub" id="nodeWeightSub">Small</div></div></div>
-            <div class="node active" id="nodeRate"><div class="node-dot">₱</div><div><div class="node-label">Rate</div><div class="node-sub" id="nodeRateSub">₱175</div></div></div>
+            <div class="node active" id="nodeOrigin"><div class="node-dot">1</div><div><div class="node-label">Origin</div><div class="node-sub" id="nodeOriginSub">Luzon</div></div></div>
+            <div class="node active" id="nodeDestination"><div class="node-dot">2</div><div><div class="node-label">Destination</div><div class="node-sub" id="nodeDestinationSub">Same City / Province</div></div></div>
+            <div class="node active" id="nodeWeight"><div class="node-dot">3</div><div><div class="node-label">Weight</div><div class="node-sub" id="nodeWeightSub">Docs</div></div></div>
+            <div class="node active" id="nodeRate"><div class="node-dot">₱</div><div><div class="node-label">Rate</div><div class="node-sub" id="nodeRateSub">₱80</div></div></div>
             <div class="node active" id="nodePay"><div class="node-dot">QR</div><div><div class="node-label">Pay</div><div class="node-sub" id="nodePaySub">CoopPay</div></div></div>
           </div>
         </div>
@@ -433,8 +433,8 @@ textarea{min-height:70px;resize:vertical;}
             <label class="field-label" for="originGroup">Origin area</label>
             <select class="select" id="originGroup">
               <option value="MM_GMA">Metro Manila / Greater Manila Area</option>
-              <option value="LUZON">Luzon</option>
-              <option value="VISAYAS" selected>Visayas</option>
+              <option value="LUZON" selected>Luzon</option>
+              <option value="VISAYAS">Visayas</option>
               <option value="MINDANAO">Mindanao</option>
             </select>
             <div class="small-help">Choose the broad area where the package starts. Specific city, branch, or drop-off point is entered below.</div>
@@ -449,18 +449,18 @@ textarea{min-height:70px;resize:vertical;}
           <div class="calc-section">
             <label class="field-label" for="actualWeightKg">Weight</label>
             <div class="weight-line">
-              <input type="number" id="actualWeightKg" min="0.1" step="0.1" value="1" inputmode="decimal">
-              <div class="service-pill" id="servicePill">Small</div>
+              <input type="number" id="actualWeightKg" min="0.01" step="0.01" value="0.5" inputmode="decimal">
+              <div class="service-pill" id="servicePill">Docs</div>
             </div>
-            <div class="small-help" id="weightHelp">Over 0.5 kg to 1 kg · CoopPadala Small</div>
+            <div class="small-help" id="weightHelp">0.01 kg to 0.50 kg · CoopPadala Docs</div>
           </div>
         </div>
 
         <div class="amount-card">
           <div>
             <div class="amount-label">Amount to Pay</div>
-            <div class="amount" id="amountDisplay">₱175</div>
-            <div class="amount-note" id="amountNote">Visayas → Luzon / Metro Manila / Greater Manila Area · CoopPadala Small</div>
+            <div class="amount" id="amountDisplay">₱80</div>
+            <div class="amount-note" id="amountNote">Luzon → Same City / Province as Origin · CoopPadala Docs</div>
             <div class="ref-line"><strong>Client ref:</strong> <span id="clientRefDisplay"></span></div>
             <div class="pay-tabs">
               <button type="button" class="pay-tab active" data-method="CoopPay" data-qr="https://cdn.shopify.com/s/files/1/1304/2747/files/qrcode_CoopPay.png?v=1773152216">CoopPay</button>
@@ -711,6 +711,8 @@ function getDestinationOptions(origin){
 }
 
 function getDefaultDestination(origin){
+  if(origin === "MM_GMA") return "WITHIN_CITY_PROVINCE";
+  if(origin === "LUZON") return "WITHIN_CITY_PROVINCE";
   if(origin === "VISAYAS") return "VISAYAS";
   if(origin === "MINDANAO") return "MINDANAO";
   return "LUZON_MM_GMA";
@@ -799,22 +801,28 @@ function makeClientRef(){
   return 'CPD-' + stamp + '-' + rand;
 }
 
-function serviceFromWeight(weight){
+function normalizeWeight(weight){
   const w = Number(weight || 0);
-  if(w <= 0.5) return "COOPPADALA_DOCS";
-  if(w <= 1) return "COOPPADALA_SMALL";
-  if(w <= 3) return "COOPPADALA_MEDIUM";
-  if(w <= 6) return "COOPPADALA_LARGE";
+  if(!Number.isFinite(w) || w <= 0) return 0.01;
+  return Math.ceil(w * 100) / 100;
+}
+
+function serviceFromWeight(weight){
+  const w = normalizeWeight(weight);
+  if(w <= 0.50) return "COOPPADALA_DOCS";
+  if(w <= 1.00) return "COOPPADALA_SMALL";
+  if(w <= 3.00) return "COOPPADALA_MEDIUM";
+  if(w <= 6.00) return "COOPPADALA_LARGE";
   return "COOPPADALA_JUMBO";
 }
 
 function serviceHelp(service, weight){
   const map = {
-    COOPPADALA_DOCS:"Up to 0.5 kg · CoopPadala Docs",
-    COOPPADALA_SMALL:"Over 0.5 kg to 1 kg · CoopPadala Small",
-    COOPPADALA_MEDIUM:"Over 1 kg to 3 kg · CoopPadala Medium",
-    COOPPADALA_LARGE:"Over 3 kg to 6 kg · CoopPadala Large",
-    COOPPADALA_JUMBO:"Above 6 kg · CoopPadala Jumbo"
+    COOPPADALA_DOCS:"0.01 kg to 0.50 kg · CoopPadala Docs",
+    COOPPADALA_SMALL:"0.51 kg to 1.00 kg · CoopPadala Small",
+    COOPPADALA_MEDIUM:"1.01 kg to 3.00 kg · CoopPadala Medium",
+    COOPPADALA_LARGE:"3.01 kg to 6.00 kg · CoopPadala Large",
+    COOPPADALA_JUMBO:"6.01 kg and above · CoopPadala Jumbo"
   };
   if(service !== "COOPPADALA_JUMBO") return map[service];
   const extra = Math.max(0, Math.ceil(Number(weight || 0) - 6));
@@ -824,8 +832,10 @@ function serviceHelp(service, weight){
 function calculate(){
   const origin = val('originGroup');
   const dest = val('destinationGroup');
-  let weight = Number(val('actualWeightKg'));
-  if(!Number.isFinite(weight) || weight <= 0){ weight = 0.1; }
+  let weight = normalizeWeight(val('actualWeightKg'));
+  if(document.getElementById('actualWeightKg').value && Number(document.getElementById('actualWeightKg').value) !== weight){
+    document.getElementById('actualWeightKg').value = weight;
+  }
 
   const service = serviceFromWeight(weight);
   const serviceLabel = LABELS.SERVICE[service];
